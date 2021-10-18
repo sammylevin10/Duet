@@ -8,11 +8,15 @@ var ellipseWidth = 0;
 
 // Assets
 let image1;
-let song1;
+let song;
+let songs = [];
 
 function preload() {
-  image1 = loadImage("assets/images/image1.png");
-  song1 = loadSound("assets/sound/song1.wav");
+  for (let i = 1; i <= 3; i++) {
+    temp = loadSound("assets/sound/song" + i + ".wav");
+    songs.push(temp);
+  }
+  song = songs[0];
 }
 
 function setup() {
@@ -30,7 +34,7 @@ function draw() {
   background(0);
   fill(255);
   textAlign(CENTER);
-  text("Click to play/pause", width / 2, height / 2);
+  text("Click to play/pause", width / 2, height / 10);
 
   // peakDetect accepts an fft post-analysis
   fft.analyze();
@@ -47,10 +51,16 @@ function draw() {
 
 function mouseClicked() {
   if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-    if (song1.isPlaying()) {
-      song1.stop();
+    if (song.isPlaying()) {
+      song.stop();
     } else {
-      song1.play();
+      song.play();
     }
   }
+}
+
+function changeSong(i) {
+  song.stop();
+  song = songs[i];
+  song.play();
 }

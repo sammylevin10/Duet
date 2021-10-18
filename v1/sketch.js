@@ -1,4 +1,5 @@
 // Notes
+// Beat detection using p5.Amplitude();
 // Largely adapted from https://therewasaguy.github.io/p5-music-viz/demos/01d_beat_detect_amplitude/
 
 // Sound

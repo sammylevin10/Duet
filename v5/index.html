@@ -129,7 +129,7 @@
     window.onSpotifyWebPlaybackSDKReady = () => {
       // const token = "BQBc10XDlKyVNeTAXqUyqjdeiOSjCnMnj0-FE8auKYYdcmpkdX809eddC6ZychGwCqYwjLCRMb2AuEb1XoNGUaXD7l03YOyKjt5p0PzAjJUMs8souXKB3O4TNkjzgMCeXU9aSYD6jFjPgis_xIQW631blM_26B8FCEKeEA";
       const player = new Spotify.Player({
-        name: "Web Playback SDK Quick Start Player",
+        name: "Music Visualizer",
         getOAuthToken: (cb) => {
           cb(ACCESS_TOKEN);
         },
@@ -138,7 +138,7 @@
 
       // Ready
       player.addListener("ready", ({ device_id }) => {
-        console.log("Ready with Device ID", device_id);
+        window.alert("Ready with Device ID " + device_id);
       });
 
       // Not Ready

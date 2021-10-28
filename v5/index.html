@@ -32,7 +32,7 @@
       ><input
         name="redirect_uri"
         type="text"
-        value="http://localhost:8888/interactive/MusicVisualizer/v3/?"
+        value="http://localhost:8888/interactive/MusicVisualizer/v5/?"
       />
       <hr />
       <label for="scope">scope:</label
@@ -49,8 +49,11 @@
     <hr />
     <button id="fetch_profile_info">Fetch profile information</button>
     <hr />
+    <button id="togglePlay">Toggle Play</button>
+    <hr />
     <div id="profile_info"></div>
   </body>
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
     function getFormData(formId) {
       const form = document.getElementById(formId);
@@ -59,7 +62,7 @@
     }
 
     const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
-    const API_ENDPOINT = "https://api.spotify.com/v1/me/following";
+    const API_ENDPOINT = "https://api.spotify.com/v1/me";
     let ACCESS_TOKEN;
 
     function formDataToParams(formData) {
@@ -108,10 +111,10 @@
           console.log(response);
           return response.json();
         })
-        // .then(function (json) {
-        //   console.log(json);
-        //   //   updateProfileInformation(json);
-        // })
+        .then(function (json) {
+          console.log(json);
+          updateProfileInformation(json);
+        })
         .catch(function (error) {
           console.log(error);
         });
@@ -122,5 +125,45 @@
 
     const fetchButton = document.querySelector("button#fetch_profile_info");
     fetchButton.addEventListener("click", fetchProfileInformation);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      // const token = "BQBc10XDlKyVNeTAXqUyqjdeiOSjCnMnj0-FE8auKYYdcmpkdX809eddC6ZychGwCqYwjLCRMb2AuEb1XoNGUaXD7l03YOyKjt5p0PzAjJUMs8souXKB3O4TNkjzgMCeXU9aSYD6jFjPgis_xIQW631blM_26B8FCEKeEA";
+      const player = new Spotify.Player({
+        name: "Web Playback SDK Quick Start Player",
+        getOAuthToken: (cb) => {
+          cb(ACCESS_TOKEN);
+        },
+        volume: 0.5,
+      });
+
+      // Ready
+      player.addListener("ready", ({ device_id }) => {
+        console.log("Ready with Device ID", device_id);
+      });
+
+      // Not Ready
+      player.addListener("not_ready", ({ device_id }) => {
+        console.log("Device ID has gone offline", device_id);
+      });
+
+      player.addListener("initialization_error", ({ message }) => {
+        console.error(message);
+      });
+
+      player.addListener("authentication_error", ({ message }) => {
+        console.error(message);
+      });
+
+      player.addListener("account_error", ({ message }) => {
+        console.error(message);
+      });
+
+      document.getElementById("togglePlay").onclick = function () {
+        player.togglePlay();
+        console.log("toggle");
+      };
+
+      player.connect();
+    };
   </script>
 </html>

@@ -8,37 +8,14 @@ const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const API_ENDPOINT = "https://api.spotify.com/v1/me";
 let ACCESS_TOKEN;
 
-// const authenticationParams = {
-//   client_id: "c765bbca6c64400286254e513c85db86",
-//   response_type: "token",
-//   redirect_uri: "http://localhost:8888/interactive/MusicVisualizer/v5/?",
-//   scope: "",
-// };
-
 const authenticationParams = new URLSearchParams("");
 authenticationParams.append("client_id", "c765bbca6c64400286254e513c85db86");
 authenticationParams.append("response_type", "token");
 authenticationParams.append(
   "redirect_uri",
-  "http://localhost:8888/interactive/MusicVisualizer/v5/?"
+  "http://localhost:8888/interactive/MusicVisualizer/v5/player.html"
 );
 authenticationParams.append("scope", "");
-
-function formDataToParams(formData) {
-  console.log("formDataToParams");
-  const params = new URLSearchParams("");
-  for (let [key, value] of formData.entries()) {
-    console.log(key + " " + value);
-    params.set(key, value);
-  }
-  console.log("");
-  for (let [key, value] of authenticationParams) {
-    console.log(key + " " + value);
-    params.set(key, value);
-  }
-  return params;
-  // console.log(params);
-}
 
 function getCurrentQueryParameters(delimiter = "#") {
   // the access_token is passed back in a URL fragment, not a query string
@@ -63,6 +40,7 @@ function updateProfileInformation(json) {
 }
 
 function fetchProfileInformation() {
+  console.log("FETCH");
   const currentQueryParameters = getCurrentQueryParameters("#");
   ACCESS_TOKEN = currentQueryParameters.get("access_token");
 
@@ -89,8 +67,8 @@ function fetchProfileInformation() {
     });
 }
 
-const buildButton = document.querySelector("button#build_link");
-buildButton.addEventListener("click", buildAuthLink);
+// const buildButton = document.querySelector("button#build_link");
+// buildButton.addEventListener("click", buildAuthLink);
 
 const fetchButton = document.querySelector("button#fetch_profile_info");
 fetchButton.addEventListener("click", fetchProfileInformation);

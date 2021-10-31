@@ -1,4 +1,4 @@
-<!-- This example was adapted from https://gist.github.com/eamonnbell/84e3463e964eeae87f59699c7e711f1b -->
+<!-- This example was taken from https://gist.github.com/eamonnbell/84e3463e964eeae87f59699c7e711f1b -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,17 +13,11 @@
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <link rel="stylesheet" href="style.css" />
   <body>
-    <div class="center-wrapper">
-      <div class="modal">
-        <h1 class="h1-modal">Welcome</h1>
-        <p class="p-modal">
-          Sign into Spotify to start using the MusicVisualizer
-        </p>
-        <button class="spotify-button" id="build_link">
-          SIGN INTO SPOTIFY
-        </button>
-      </div>
-    </div>
+    <button id="fetch_profile_info">Fetch profile information</button>
+    <hr />
+    <button id="togglePlay">Toggle Play</button>
+    <hr />
+    <div id="profile_info"></div>
   </body>
-  <script src="index.js"></script>
+  <script src="player.js"></script>
 </html>

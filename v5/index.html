@@ -10,14 +10,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Spotify API - Implicit Grant Flow</title>
   </head>
-
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <link rel="stylesheet" href="style.css" />
   <body>
     <p>
       Example of Implicit Grant flow authorization with Spotify API. Uses native
       browser APIs only.
     </p>
     <p></p>
-    <form action="" id="main_form">
+    <!-- <form action="" id="main_form">
       <label for="client_id">client_id:</label
       ><input
         name="client_id"
@@ -37,9 +38,12 @@
       <hr />
       <label for="scope">scope:</label
       ><input name="scope" type="text" value="" />
-    </form>
+    </form> -->
     <hr />
-    <button id="build_link">Build auth link</button>
+    <button id="build_link">Build auth link (legacy)</button>
+    <button class="spotify-button" id="build_link">
+      SIGN INTO SPOTIFY
+    </button>
     <hr />
     Auth link: <a id="auth_link" href=""></a>
     <hr />
@@ -53,6 +57,5 @@
     <hr />
     <div id="profile_info"></div>
   </body>
-  <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script src="sketch.js"></script>
 </html>

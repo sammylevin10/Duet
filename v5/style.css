@@ -1,0 +1,11 @@
+.spotify-button {
+  font-family: "Helvetica";
+  font-weight: bold;
+  color: white;
+  background-color: #1db954;
+  border: none;
+  letter-spacing: 2px;
+  padding: 15px 30px 15px 30px;
+  margin: 5px;
+  border-radius: 25px;
+}

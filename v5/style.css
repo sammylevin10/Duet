@@ -8,7 +8,14 @@
 body {
   margin: 0;
   font-family: "Helvetica";
-  background-color: grey;
+  background-color: black;
+}
+
+#canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .center-wrapper {
@@ -63,4 +70,24 @@ body {
 .spotify-button:hover {
   background-color: var(--secondary-green);
   transform: scale(1.05);
+}
+
+.spotify-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 100px;
+  color: white;
+  background: var(--black);
+}
+
+.left-container {
+  margin-left: 25px;
+}
+
+.right-container {
+  margin-right: 25px;
 }

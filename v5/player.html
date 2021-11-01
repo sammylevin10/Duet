@@ -10,16 +10,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Spotify API - Implicit Grant Flow</title>
   </head>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"
+    integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
+  <!-- the p5 sound library -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"
+    integrity="sha512-WzkwpdWEMAY/W8WvP9KS2/VI6zkgejR4/KTxTl4qHx0utqeyVE0JY+S1DlMuxDChC7x0oXtk/ESji6a0lP/Tdg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <link rel="stylesheet" href="style.css" />
   <body>
     <!-- <button id="fetch_profile_info">Fetch profile information</button> -->
     <!-- <hr /> -->
-    <button id="togglePlay">Toggle Play</button>
+    <!-- <button id="togglePlay">Toggle Play</button> -->
     <!-- <hr /> -->
-    <div class="text" id="profile_info"></div>
-    <p id="username"></p>
-    <p id="followers"></p>
+    <!-- <div class="text" id="profile_info"></div> -->
+    <a href="index.html">Debug p5 audio</a>
+    <div id="canvas-container"></div>
+    <div class="spotify-bar">
+      <div class="left-container">
+        <button id="togglePlay" class="spotify-button">PLAY/PAUSE</button>
+      </div>
+      <div class="right-container">
+        <p id="username"></p>
+        <p id="followers"></p>
+      </div>
+    </div>
   </body>
   <script src="player.js"></script>
 </html>

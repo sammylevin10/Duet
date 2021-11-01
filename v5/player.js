@@ -8,16 +8,10 @@ const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const API_ENDPOINT = "https://api.spotify.com/v1/me";
 let ACCESS_TOKEN;
 
-fetchProfileInformation();
-
-const authenticationParams = new URLSearchParams("");
-authenticationParams.append("client_id", "c765bbca6c64400286254e513c85db86");
-authenticationParams.append("response_type", "token");
-authenticationParams.append(
-  "redirect_uri",
-  "http://localhost:8888/interactive/MusicVisualizer/v5/player.html"
-);
-authenticationParams.append("scope", "");
+window.onSpotifyWebPlaybackSDKReady = () => {
+  startWebPlaybackSDK();
+  fetchProfileInformation();
+};
 
 function getCurrentQueryParameters(delimiter = "#") {
   // the access_token is passed back in a URL fragment, not a query string
@@ -27,22 +21,14 @@ function getCurrentQueryParameters(delimiter = "#") {
   return params;
 }
 
-function buildAuthLink() {
-  // const params = formDataToParams(getFormData("main_form"));
-  const authURI = AUTH_BASE_URL + "?" + authenticationParams;
-  const authLinkAnchor = document.querySelector("a#auth_link");
-  authLinkAnchor.setAttribute("href", authURI);
-  authLinkAnchor.textContent = authURI;
-}
-
 function updateProfileInformation(json) {
-  const infoString = `Welcome back, ${json.id}!`;
-  const profileInfoElement = document.querySelector("#profile_info");
+  // const infoString = `Welcome back, ${json.id}!`;
+  // const profileInfoElement = document.querySelector("#profile_info");
   const username = document.querySelector("#username");
   const followers = document.querySelector("#followers");
-  profileInfoElement.textContent = infoString;
+  // profileInfoElement.textContent = infoString;
   username.textContent = `${json.id}`;
-  followers.textContent = `${json.followers.total}`;
+  followers.textContent = `${json.followers.total} followers`;
   // profileInfoElement.textContent = "aaaaa";
 }
 
@@ -67,18 +53,11 @@ function fetchProfileInformation() {
       console.log(json);
       updateProfileInformation(json);
       // AFTER RECEIVING API RESONSE, FIRE UP SDK
-      startWebPlaybackSDK();
     })
     .catch(function (error) {
       console.log(error);
     });
 }
-
-// const buildButton = document.querySelector("button#build_link");
-// buildButton.addEventListener("click", buildAuthLink);
-
-const fetchButton = document.querySelector("button#fetch_profile_info");
-fetchButton.addEventListener("click", fetchProfileInformation);
 
 function startWebPlaybackSDK() {
   // window.onSpotifyWebPlaybackSDKReady = () => {
@@ -96,7 +75,7 @@ function startWebPlaybackSDK() {
 
   // Ready
   player.addListener("ready", ({ device_id }) => {
-    window.alert(
+    console.log(
       "Ready with Device ID " +
         device_id +
         "Select the MusicVisualizer device in Spotify to begin playback."
@@ -126,6 +105,9 @@ function startWebPlaybackSDK() {
     player.getCurrentState().then((state) => {
       if (!state) {
         console.error("User is not playing music through the Web Playback SDK");
+        window.alert(
+          "Open Spotify and select MusicVisualizer as the playback device"
+        );
         return;
       }
 
@@ -138,4 +120,93 @@ function startWebPlaybackSDK() {
   };
 
   // };
+}
+
+// p5 stuff
+
+let spread;
+let inc;
+let margin;
+let vertOffset;
+// extra flat line at either end
+let extraLine = 70;
+// steps between vertexes
+let step = 3;
+// spacing between lines
+let ySpacing = 2.6;
+
+// noise settings
+let offset = 0;
+let offsetInc = 0.09;
+let rowOffset = 40;
+let lineMultiplier = 47;
+
+// fuzz settings
+let fuzzOffset = 1000;
+let fuzzInc = offsetInc;
+let fuzzMultiplier = 3.5;
+let mic;
+
+function setup() {
+  let cnv = createCanvas(windowHeight, windowHeight);
+  cnv.parent("#canvas-container");
+  background(200);
+
+  margin = width / 3;
+  vertOffset = width / 4.6;
+  spread = width - margin * 2;
+  inc = (TWO_PI * step) / spread;
+  stroke(255);
+  strokeWeight(1.2);
+  fill(0);
+  // noFill()
+  frameRate(24);
+
+  mic = new p5.AudioIn();
+  mic.start();
+  fft = new p5.FFT();
+}
+
+function draw() {
+  background(0);
+  let vol = mic.getLevel();
+  console.log("volume", vol);
+  lineMultiplier = vol * 1000;
+
+  // make rows
+  for (let y = 0; y <= 50 * ySpacing; y += ySpacing) {
+    let a = 0.0;
+    // begin the line
+    beginShape();
+    for (let x = -extraLine; x <= spread + extraLine; x += step) {
+      // perlin noise
+      let n = noise(offset + x / rowOffset + y) * lineMultiplier;
+      // flatten the line if not in the 'spread' area
+      if (x < 0 || x > spread) a = 0;
+      // use a sine wave to multiply the noise
+      let vert = (1 - sin(a + PI / 2)) * n;
+      // add some extra fuzz to the line
+      let fuzz = noise(fuzzOffset + x / rowOffset + y) * fuzzMultiplier;
+      // draw the line
+      vertex(
+        x + margin,
+        height - vert - (height - y * ySpacing) + vertOffset + fuzz
+      );
+      //increment the angle for the sine wave.
+      a = a + inc;
+    }
+    endShape();
+  }
+  // increment the noise and fuzz
+  offset += offsetInc;
+  fuzzOffset += fuzzInc;
+
+  let spectrum = fft.analyze();
+  // noStroke();
+  //fill(255, 0, 255);
+  for (let i = 0; i < spectrum.length; i++) {
+    x = map(i, 0, spectrum.length, 0, width);
+    let h = -height + map(spectrum[i], 0, 255, height, 0);
+    //rect(x, height, width / spectrum.length, h );
+  }
 }

@@ -8,6 +8,8 @@ const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const API_ENDPOINT = "https://api.spotify.com/v1/me";
 let ACCESS_TOKEN;
 
+fetchProfileInformation();
+
 const authenticationParams = new URLSearchParams("");
 authenticationParams.append("client_id", "c765bbca6c64400286254e513c85db86");
 authenticationParams.append("response_type", "token");
@@ -34,9 +36,14 @@ function buildAuthLink() {
 }
 
 function updateProfileInformation(json) {
-  const infoString = `username: ${json.id} has ${json.followers.total} follower(s) on Spotify`;
+  const infoString = `Welcome back, ${json.id}!`;
   const profileInfoElement = document.querySelector("#profile_info");
+  const username = document.querySelector("#username");
+  const followers = document.querySelector("#followers");
   profileInfoElement.textContent = infoString;
+  username.textContent = `${json.id}`;
+  followers.textContent = `${json.followers.total}`;
+  // profileInfoElement.textContent = "aaaaa";
 }
 
 function fetchProfileInformation() {
@@ -116,6 +123,18 @@ function startWebPlaybackSDK() {
   document.getElementById("togglePlay").onclick = function () {
     player.togglePlay();
     console.log("toggle");
+    player.getCurrentState().then((state) => {
+      if (!state) {
+        console.error("User is not playing music through the Web Playback SDK");
+        return;
+      }
+
+      var current_track = state.track_window.current_track;
+      var next_track = state.track_window.next_tracks[0];
+
+      console.log("Currently Playing", current_track);
+      console.log("Playing Next", next_track);
+    });
   };
 
   // };

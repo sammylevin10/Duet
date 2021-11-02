@@ -15,7 +15,7 @@ authenticationParams.append(
   "redirect_uri",
   "http://localhost:8888/interactive/MusicVisualizer/v5/player.html"
 );
-authenticationParams.append("scope", "");
+authenticationParams.append("scope", "streaming");
 
 function getCurrentQueryParameters(delimiter = "#") {
   // the access_token is passed back in a URL fragment, not a query string

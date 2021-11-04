@@ -118,6 +118,23 @@ function startWebPlaybackSDK() {
       console.log("Playing Next", next_track);
     });
   };
+  document.getElementById("nextTrack").onclick = function () {
+    console.log("next");
+    player.nextTrack();
+    player.togglePlay();
+    // player.nextTrack().then(() => {
+    //   console.log("Skipped to next track!");
+    // });
+    player.getCurrentState().then((state) => {
+      if (!state) {
+        console.error("User is not playing music through the Web Playback SDK");
+        window.alert(
+          "Open Spotify and select MusicVisualizer as the playback device"
+        );
+        return;
+      }
+    });
+  };
 
   // };
 }
@@ -170,7 +187,6 @@ function setup() {
 function draw() {
   background(0);
   let vol = mic.getLevel();
-  console.log("volume", vol);
   lineMultiplier = vol * 1000;
 
   // make rows

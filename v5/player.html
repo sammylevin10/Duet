@@ -9,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Spotify API - Implicit Grant Flow</title>
+    <script
+      src="https://kit.fontawesome.com/87ec702a1a.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"
@@ -26,6 +30,10 @@
   ></script>
 
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script
+    src="https://kit.fontawesome.com/87ec702a1a.js"
+    crossorigin="anonymous"
+  ></script>
   <link rel="stylesheet" href="style.css" />
   <body>
     <!-- <button id="fetch_profile_info">Fetch profile information</button> -->
@@ -37,9 +45,15 @@
     <div id="canvas-container"></div>
     <div class="spotify-bar">
       <div class="left-container">
-        <button id="previousTrack" class="spotify-button">PREV</button>
-        <button id="togglePlay" class="spotify-button">PLAY/PAUSE</button>
-        <button id="nextTrack" class="spotify-button">NEXT</button>
+        <button id="previousTrack" class="spotify-button">
+          <i class="fas fa-step-backward"></i>
+        </button>
+        <button id="togglePlay" class="spotify-button">
+          <i class="fas fa-play"></i>
+        </button>
+        <button id="nextTrack" class="spotify-button">
+          <i class="fas fa-step-forward"></i>
+        </button>
       </div>
       <div class="right-container">
         <p id="username"></p>

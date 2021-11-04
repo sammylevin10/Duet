@@ -1,3 +1,5 @@
+let playing = false;
+
 function getFormData(formId) {
   const form = document.getElementById(formId);
   const formData = new FormData(form);
@@ -100,10 +102,24 @@ function startWebPlaybackSDK() {
   });
 
   document.getElementById("togglePlay").onclick = function () {
-    player.togglePlay();
+    player.togglePlay().then(() => {
+      playing = !playing;
+      console.log("Playing: " + playing);
+      if (playing) {
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-pause-circle";
+      } else {
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-play-circle";
+      }
+    });
     console.log("toggle");
+
     player.getCurrentState().then((state) => {
       if (!state) {
+        playing = false;
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-play-circle";
         console.error("User is not playing music through the Web Playback SDK");
         window.alert(
           "Open Spotify and select MusicVisualizer as the playback device"

@@ -121,10 +121,6 @@ function startWebPlaybackSDK() {
   document.getElementById("nextTrack").onclick = function () {
     console.log("next");
     player.nextTrack();
-    player.togglePlay();
-    // player.nextTrack().then(() => {
-    //   console.log("Skipped to next track!");
-    // });
     player.getCurrentState().then((state) => {
       if (!state) {
         console.error("User is not playing music through the Web Playback SDK");
@@ -135,8 +131,19 @@ function startWebPlaybackSDK() {
       }
     });
   };
-
-  // };
+  document.getElementById("previousTrack").onclick = function () {
+    console.log("previous");
+    player.previousTrack();
+    player.getCurrentState().then((state) => {
+      if (!state) {
+        console.error("User is not playing music through the Web Playback SDK");
+        window.alert(
+          "Open Spotify and select MusicVisualizer as the playback device"
+        );
+        return;
+      }
+    });
+  };
 }
 
 // p5 stuff

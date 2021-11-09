@@ -3,7 +3,7 @@
 // Largely adapted from https://p5js.org/reference/#/p5.PeakDetect
 
 // Sound
-let fft, peakDetect;
+let mic, fft, peakDetect;
 var ellipseWidth = 0;
 
 // Assets
@@ -12,11 +12,13 @@ let song;
 let songs = [];
 
 function preload() {
-  for (let i = 1; i <= 3; i++) {
-    temp = loadSound("assets/sound/song" + i + ".wav");
-    songs.push(temp);
-  }
-  song = songs[0];
+  // temp = loadSound("assets/sound/song1.wav");
+  // songs.push(temp);
+  // for (let i = 1; i <= 3; i++) {
+  //   temp = loadSound("assets/sound/song" + i + ".wav");
+  //   songs.push(temp);
+  // }
+  // song = songs[0];
 }
 
 function setup() {
@@ -25,8 +27,12 @@ function setup() {
   background(0);
   noStroke();
 
-  // p5.PeakDetect requires a p5.FFT
+  mic = new p5.AudioIn();
+  mic.start();
   fft = new p5.FFT();
+  fft.setInput(mic);
+  // p5.PeakDetect requires a p5.FFT
+  // fft = new p5.FFT();
   peakDetect = new p5.PeakDetect();
 }
 
@@ -37,9 +43,17 @@ function draw() {
   text("Click to play/pause", width / 2, height / 10);
 
   // peakDetect accepts an fft post-analysis
-  fft.analyze();
+  let spectrum = fft.analyze();
   peakDetect.update(fft);
 
+  stroke(1);
+  beginShape();
+  for (i = 0; i < spectrum.length; i++) {
+    vertex(i, map(spectrum[i], 0, 255, height, 0));
+  }
+  endShape();
+
+  console.log(peakDetect.isDetected);
   if (peakDetect.isDetected) {
     ellipseWidth = width / 2;
   } else {

@@ -45,7 +45,7 @@ function setup() {
   mic = new p5.AudioIn();
   mic.start();
   fft = new p5.FFT();
-  circle1 = new Rects-(width/2, height/2);
+  circle1 = new Rects(width/2, height/2);
  //particle = new Particle(width/2, height/2);
 }
 

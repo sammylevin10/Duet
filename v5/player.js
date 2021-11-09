@@ -1,3 +1,5 @@
+let playing = false;
+
 function getFormData(formId) {
   const form = document.getElementById(formId);
   const formData = new FormData(form);
@@ -33,7 +35,7 @@ function updateProfileInformation(json) {
 }
 
 function fetchProfileInformation() {
-  console.log("FETCH");
+  // console.log("FETCH");
   const currentQueryParameters = getCurrentQueryParameters("#");
   ACCESS_TOKEN = currentQueryParameters.get("access_token");
 
@@ -46,11 +48,11 @@ function fetchProfileInformation() {
 
   fetch(API_ENDPOINT, fetchOptions)
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .then(function (json) {
-      console.log(json);
+      // console.log(json);
       updateProfileInformation(json);
       // AFTER RECEIVING API RESONSE, FIRE UP SDK
     })
@@ -100,10 +102,24 @@ function startWebPlaybackSDK() {
   });
 
   document.getElementById("togglePlay").onclick = function () {
-    player.togglePlay();
-    console.log("toggle");
+    player.togglePlay().then(() => {
+      playing = !playing;
+      // console.log("Playing: " + playing);
+      if (playing) {
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-pause-circle";
+      } else {
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-play-circle";
+      }
+    });
+    // console.log("toggle");
+
     player.getCurrentState().then((state) => {
       if (!state) {
+        playing = false;
+        document.getElementById("togglePlayIcon").className =
+          "fas fa-play-circle";
         console.error("User is not playing music through the Web Playback SDK");
         window.alert(
           "Open Spotify and select MusicVisualizer as the playback device"
@@ -114,12 +130,12 @@ function startWebPlaybackSDK() {
       var current_track = state.track_window.current_track;
       var next_track = state.track_window.next_tracks[0];
 
-      console.log("Currently Playing", current_track);
-      console.log("Playing Next", next_track);
+      // console.log("Currently Playing", current_track);
+      // console.log("Playing Next", next_track);
     });
   };
   document.getElementById("nextTrack").onclick = function () {
-    console.log("next");
+    // console.log("next");
     player.nextTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
@@ -132,7 +148,7 @@ function startWebPlaybackSDK() {
     });
   };
   document.getElementById("previousTrack").onclick = function () {
-    console.log("previous");
+    // console.log("previous");
     player.previousTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
@@ -148,88 +164,159 @@ function startWebPlaybackSDK() {
 
 // p5 stuff
 
-let spread;
-let inc;
-let margin;
-let vertOffset;
-// extra flat line at either end
-let extraLine = 70;
-// steps between vertexes
-let step = 3;
-// spacing between lines
-let ySpacing = 2.6;
-
-// noise settings
-let offset = 0;
-let offsetInc = 0.09;
-let rowOffset = 40;
-let lineMultiplier = 47;
-
-// fuzz settings
-let fuzzOffset = 1000;
-let fuzzInc = offsetInc;
-let fuzzMultiplier = 3.5;
+// Sound
 let mic;
+let fft, peakDetect;
+var ellipseWidth = 0;
+
+let blooms = [];
 
 function setup() {
-  let cnv = createCanvas(windowHeight, windowHeight);
+  let cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent("#canvas-container");
-  background(200);
-
-  margin = width / 3;
-  vertOffset = width / 4.6;
-  spread = width - margin * 2;
-  inc = (TWO_PI * step) / spread;
-  stroke(255);
-  strokeWeight(1.2);
-  fill(0);
-  // noFill()
-  frameRate(24);
-
+  background(0);
+  noStroke();
   mic = new p5.AudioIn();
   mic.start();
   fft = new p5.FFT();
+  fft.setInput(mic);
+  peakDetect = new p5.PeakDetect();
+  colorMode(HSB, 100, 100, 100, 100);
 }
 
 function draw() {
-  background(0);
-  let vol = mic.getLevel();
-  lineMultiplier = vol * 1000;
-
-  // make rows
-  for (let y = 0; y <= 50 * ySpacing; y += ySpacing) {
-    let a = 0.0;
-    // begin the line
-    beginShape();
-    for (let x = -extraLine; x <= spread + extraLine; x += step) {
-      // perlin noise
-      let n = noise(offset + x / rowOffset + y) * lineMultiplier;
-      // flatten the line if not in the 'spread' area
-      if (x < 0 || x > spread) a = 0;
-      // use a sine wave to multiply the noise
-      let vert = (1 - sin(a + PI / 2)) * n;
-      // add some extra fuzz to the line
-      let fuzz = noise(fuzzOffset + x / rowOffset + y) * fuzzMultiplier;
-      // draw the line
-      vertex(
-        x + margin,
-        height - vert - (height - y * ySpacing) + vertOffset + fuzz
-      );
-      //increment the angle for the sine wave.
-      a = a + inc;
-    }
-    endShape();
-  }
-  // increment the noise and fuzz
-  offset += offsetInc;
-  fuzzOffset += fuzzInc;
+  background(0, 0, 0, 5);
+  micLevel = mic.getLevel();
+  // console.log(micLevel);
+  // testBloom = new Bloom1(width / 2, height / 2, 14, micLevel * 100);
+  // testBloom.moveAndDisplay();
 
   let spectrum = fft.analyze();
-  // noStroke();
-  //fill(255, 0, 255);
-  for (let i = 0; i < spectrum.length; i++) {
-    x = map(i, 0, spectrum.length, 0, width);
-    let h = -height + map(spectrum[i], 0, 255, height, 0);
-    //rect(x, height, width / spectrum.length, h );
+
+  stroke(255, 255, 255, 20);
+  // strokeWeight(0.5);
+  noFill();
+  // if (playing) {
+  //   beginShape();
+  //   for (i = 0; i < spectrum.length; i++) {
+  //     vertex(
+  //       map(i, 0, spectrum.length, 0, width),
+  //       map(spectrum[i], 0, 255, height - 100, 0)
+  //     );
+  //   }
+  //   endShape();
+  // }
+
+  peakDetect.update(fft);
+  // console.log(peakDetect.isDetected);
+
+  if (peakDetect.isDetected) {
+    let bass;
+    bass = map(spectrum[250], 0, 255, 0, 100);
+    console.log("Bass: " + bass);
+    temp = new Bloom1(
+      random(width / 5, (width * 4) / 5),
+      random(height / 5, (height * 4) / 5),
+      floor(random(5, 10)),
+      floor(400 * map(bass, 0, 100, 0, 1)),
+      map(bass, 0, 100, 0, 70)
+    );
+    blooms.push(temp);
+  }
+
+  for (let i = 0; i < blooms.length; i++) {
+    // console.log("displaying");
+    blooms[i].moveAndDisplay();
+    if (blooms[i].isDead()) {
+      blooms.splice(i, 1);
+      // console.log("deleting " + i);
+      i--;
+    }
+  }
+}
+
+class Bloom1 {
+  // x position, y position, rotation count, size
+  constructor(x, y, c, s, saturation) {
+    this.x = x;
+    this.y = y;
+    this.c = c;
+    this.s = s;
+    this.saturation = saturation;
+    this.velocity = 5;
+    this.acceleration = -0.5;
+    this.rotation = 0;
+    this.rotationVelocity = random(0.2, 1);
+    this.startColor = color(random(100), this.saturation, 65, 30);
+    this.endColor = color(random(100), this.saturation, 65, 60);
+    this.colorPosition = 0;
+    this.particles = [];
+    for (let i = 0; i < random(10, 20); i++) {
+      let temp = new Particle1(x, y, s / 5, this.startColor, this.endColor);
+      this.particles.push(temp);
+    }
+  }
+  moveAndDisplay() {
+    this.colorPosition += 0.05;
+    let color = lerpColor(this.startColor, this.endColor, this.colorPosition);
+    fill(color);
+    this.s += this.velocity;
+    this.velocity += this.acceleration;
+    noStroke();
+    this.rotation += this.rotationVelocity;
+    // rotate(radians(this.rotation));
+    push();
+    translate(this.x, this.y);
+    for (let i = 0; i < this.c; i++) {
+      rotate(radians(360 / this.c + this.rotation));
+      ellipse(this.s, 0, this.s);
+      ellipse(this.s / 2, 0, this.s / 2);
+      ellipse(this.s / 4, 0, this.s / 4);
+    }
+    pop();
+    for (let i = 0; i < this.particles.length; i++) {
+      this.particles[i].moveAndDisplay();
+      if (this.particles[i].isOffScreen()) {
+        this.particles.splice(i, 1);
+        // console.log("deleting " + i);
+        i--;
+      }
+    }
+  }
+  isDead() {
+    return this.s < 1;
+  }
+}
+
+class Particle1 {
+  constructor(x, y, s, startColor, endColor) {
+    this.x = x;
+    this.y = y;
+    this.s = s;
+    this.startColor = endColor;
+    this.endColor = startColor;
+    this.colorPosition = 0;
+    this.xVelocity = random(-15, 15);
+    this.yVelocity = random(-15, 15);
+    this.xAcceleration = this.xVelocity * -1 * 0.01;
+    this.yAcceleration = this.yVelocity * -1 * 0.01;
+  }
+  moveAndDisplay() {
+    this.colorPosition += 0.05;
+    let color = lerpColor(this.startColor, this.endColor, this.colorPosition);
+    fill(color);
+    this.x += this.xVelocity;
+    this.y += this.yVelocity;
+    this.xVelocity += this.xAcceleration;
+    this.yVelocity += this.yAcceleration;
+    ellipse(this.x, this.y, this.s, this.s);
+  }
+  isOffScreen() {
+    let beyondX = this.x > width + 50 || this.x < -50;
+    let beyondY = this.y > height + 50 || this.y < -50;
+    if (beyondX || beyondY) {
+      return true;
+    }
+    return false;
   }
 }

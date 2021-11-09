@@ -1,4 +1,6 @@
 let playing = false;
+let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
+let currentTrackFeatures = {};
 
 function getFormData(formId) {
   const form = document.getElementById(formId);
@@ -7,12 +9,15 @@ function getFormData(formId) {
 }
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
-const API_ENDPOINT = "https://api.spotify.com/v1/me";
+const PROFILE_ENDPOINT =
+  "https://api.spotify.com/v1/audio-features/11dFghVXANMlKmJXsNCbNl";
+features_endpoint =
+  "https://api.spotify.com/v1/audio-features/" + currentTrackId;
 let ACCESS_TOKEN;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();
-  fetchProfileInformation();
+  fetchFeaturesInformation(features_endpoint);
 };
 
 function getCurrentQueryParameters(delimiter = "#") {
@@ -34,7 +39,7 @@ function updateProfileInformation(json) {
   // profileInfoElement.textContent = "aaaaa";
 }
 
-function fetchProfileInformation() {
+function fetchFeaturesInformation(endpoint) {
   // console.log("FETCH");
   const currentQueryParameters = getCurrentQueryParameters("#");
   ACCESS_TOKEN = currentQueryParameters.get("access_token");
@@ -46,15 +51,15 @@ function fetchProfileInformation() {
     }),
   };
 
-  fetch(API_ENDPOINT, fetchOptions)
+  fetch(endpoint, fetchOptions)
     .then(function (response) {
       // console.log(response);
       return response.json();
     })
     .then(function (json) {
       // console.log(json);
-      updateProfileInformation(json);
-      // AFTER RECEIVING API RESONSE, FIRE UP SDK
+      currentTrackFeatures = json;
+      console.log("Current track features: " + currentTrackFeatures);
     })
     .catch(function (error) {
       console.log(error);
@@ -82,6 +87,13 @@ function startWebPlaybackSDK() {
         device_id +
         "Select the MusicVisualizer device in Spotify to begin playback."
     );
+    updateCurrentTrack(player);
+    player.getCurrentState().then((state) => {
+      console.log("state: " + state);
+      var current_track = state.track_window.current_track;
+      console.log("Currently Playing ", current_track);
+      console.log("Track id ", current_track.id);
+    });
   });
 
   // Not Ready
@@ -126,12 +138,7 @@ function startWebPlaybackSDK() {
         );
         return;
       }
-
-      var current_track = state.track_window.current_track;
-      var next_track = state.track_window.next_tracks[0];
-
-      // console.log("Currently Playing", current_track);
-      // console.log("Playing Next", next_track);
+      updateCurrentTrack(player);
     });
   };
   document.getElementById("nextTrack").onclick = function () {
@@ -145,6 +152,7 @@ function startWebPlaybackSDK() {
         );
         return;
       }
+      updateCurrentTrack(player);
     });
   };
   document.getElementById("previousTrack").onclick = function () {
@@ -158,8 +166,23 @@ function startWebPlaybackSDK() {
         );
         return;
       }
+      updateCurrentTrack(player);
     });
   };
+}
+
+function updateCurrentTrack(player) {
+  player.getCurrentState().then((state) => {
+    currentTrackId = state.track_window.current_track.id;
+    console.log("Current Track ID updated to: " + currentTrackId);
+    features_endpoint =
+      "https://api.spotify.com/v1/audio-features/" + currentTrackId;
+    let json = fetchFeaturesInformation(features_endpoint);
+    console.log(
+      "After updating the current track, this is the json response from the api: " +
+        json
+    );
+  });
 }
 
 // p5 stuff

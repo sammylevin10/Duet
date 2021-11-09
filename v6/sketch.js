@@ -1,5 +1,3 @@
-// https://editor.p5js.org/sahanasripadanna/sketches/nH6cVX539
-
 let spread;
 let inc;
 let margin;

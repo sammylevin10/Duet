@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Spotify API - Implicit Grant Flow</title>
+    <title>Duet - Player</title>
     <script
       src="https://kit.fontawesome.com/87ec702a1a.js"
       crossorigin="anonymous"
@@ -42,18 +42,37 @@
     <!-- <hr /> -->
     <!-- <div class="text" id="profile_info"></div> -->
     <a href="index.html">Debug p5 audio</a>
+    <div class="center-wrapper">
+      <div class="modal">
+        <h1 class="h1-modal">Connect Duet</h1>
+        <p class="p-modal">
+          In the Spotify devices menu, select "Duet" from the options
+        </p>
+        <button class="spotify-button" id="hide-modal">
+          I'M CONNECTED
+        </button>
+      </div>
+    </div>
     <div id="canvas-container"></div>
+
     <div class="spotify-bar">
       <div class="left-container">
-        <button id="previousTrack" class="playback-control">
-          <i class="fas fa-step-backward"></i>
-        </button>
-        <button id="togglePlay" class="playback-control">
-          <i id="togglePlayIcon" class="fas fa-play-circle"></i>
-        </button>
-        <button id="nextTrack" class="playback-control">
-          <i class="fas fa-step-forward"></i>
-        </button>
+        <!-- <div id="album-cover"></div> -->
+        <img
+          src="https://i.scdn.co/image/ab67616d00001e02d5f86e2ed9a548e213030078"
+          id="album-cover"
+        />
+        <div id="playback-buttons">
+          <button id="previousTrack" class="playback-control">
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button id="togglePlay" class="playback-control">
+            <i id="togglePlayIcon" class="fas fa-play-circle"></i>
+          </button>
+          <button id="nextTrack" class="playback-control">
+            <i class="fas fa-step-forward"></i>
+          </button>
+        </div>
       </div>
       <div class="right-container">
         <p id="name"></p>

@@ -19,9 +19,9 @@ body {
 }
 
 .center-wrapper {
-  background-color: grey;
   width: 100vw;
   height: 100vh;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,6 +81,7 @@ i {
   /* padding: 0px; */
   transition: all 0.2s ease-in-out;
   height: 75px;
+  margin-top: 10px;
 }
 
 #togglePlay {
@@ -114,13 +115,32 @@ i {
 }
 
 .left-container {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
   padding: 0px;
   margin: 0px;
-  margin-left: 25px;
+  /* margin-left: 25px; */
+}
+
+#playback-buttons {
+  margin-left: 20px;
+  display: flex;
 }
 
 .right-container {
   margin-right: 25px;
+}
+
+#album-cover {
+  /* padding-top: 15px; */
+  /* display: inline-block; */
+  /* padding: 15px 0px 0px 0px; */
+  margin: 0;
+  height: 100px;
+  width: auto;
+  /* background-color: grey; */
+  /* height: auto; */
 }
 
 #name {

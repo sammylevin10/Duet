@@ -73,7 +73,7 @@ function startWebPlaybackSDK() {
   console.log("Starting Web Playback SDK");
   // const token = "BQBc10XDlKyVNeTAXqUyqjdeiOSjCnMnj0-FE8auKYYdcmpkdX809eddC6ZychGwCqYwjLCRMb2AuEb1XoNGUaXD7l03YOyKjt5p0PzAjJUMs8souXKB3O4TNkjzgMCeXU9aSYD6jFjPgis_xIQW631blM_26B8FCEKeEA";
   const player = new Spotify.Player({
-    name: "Music Visualizer",
+    name: "Duet",
     getOAuthToken: (cb) => {
       cb(ACCESS_TOKEN);
     },
@@ -87,7 +87,7 @@ function startWebPlaybackSDK() {
     window.alert(
       "Ready with Device ID " +
         device_id +
-        "Select the MusicVisualizer device in Spotify to begin playback."
+        "Select the Duet device in Spotify to begin playback."
     );
   });
 

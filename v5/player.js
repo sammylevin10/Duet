@@ -54,7 +54,7 @@ function fetchFeaturesInformation(endpoint) {
 function startWebPlaybackSDK() {
   console.log("Starting Web Playback SDK");
   const player = new Spotify.Player({
-    name: "Music Visualizer",
+    name: "Duet",
     getOAuthToken: (cb) => {
       cb(ACCESS_TOKEN);
     },
@@ -68,7 +68,7 @@ function startWebPlaybackSDK() {
     console.log(
       "Ready with Device ID " +
         device_id +
-        "Select the MusicVisualizer device in Spotify to begin playback."
+        "Select the Duet device in Spotify to begin playback."
     );
     updateCurrentTrack(player);
     player.getCurrentState().then((state) => {
@@ -107,9 +107,7 @@ function startWebPlaybackSDK() {
         playing = false;
         document.getElementById("togglePlayIcon").className =
           "fas fa-play-circle";
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
       updateCurrentTrack(player);
@@ -121,9 +119,7 @@ function startWebPlaybackSDK() {
     player.nextTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
       updateCurrentTrack(player);
@@ -135,9 +131,7 @@ function startWebPlaybackSDK() {
     player.previousTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
       updateCurrentTrack(player);
@@ -166,6 +160,13 @@ function updateButton() {
   } else {
     document.getElementById("togglePlayIcon").className = "fas fa-play-circle";
   }
+}
+
+const buildButton = document.querySelector("button#hide-modal");
+buildButton.addEventListener("click", hideModal);
+
+function hideModal() {
+  document.querySelector(".center-wrapper").style.display = "none";
 }
 
 // p5 stuff
@@ -218,7 +219,7 @@ function draw() {
   peakDetect.update(fft);
   // console.log(peakDetect.isDetected);
 
-  if (peakDetect.isDetected || frameCount % 30 == 0) {
+  if (peakDetect.isDetected) {
     background(map(acousticness, 0, 1, 15, 85), 70, 90, 5);
     let bass;
     bass = map(spectrum[250], 0, 255, 0, 1);

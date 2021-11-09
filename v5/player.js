@@ -219,6 +219,7 @@ function draw() {
   // console.log(peakDetect.isDetected);
 
   if (peakDetect.isDetected || frameCount % 30 == 0) {
+    background(map(acousticness, 0, 1, 15, 85), 70, 90, 5);
     let bass;
     bass = map(spectrum[250], 0, 255, 0, 1);
     temp = new Bloom1(
@@ -226,9 +227,9 @@ function draw() {
       random(height / 5, (height * 4) / 5),
       floor(random(5, 10)),
       floor(400 * map(bass, 0, 1, 0, 1)),
-      map(energy, 0, 1, 100, 0),
+      map(acousticness, 0, 1, 10, 90),
       map(bass, 0, 1, 0, 90),
-      map(acousticness, 0, 1, -0.8, -0.01)
+      map(energy, 0, 1, -0.1, -0.6)
     );
     blooms.push(temp);
   }
@@ -268,16 +269,16 @@ class Bloom1 {
     }
   }
   generateColors(hue) {
-    let start = hue - random(15);
-    let end = hue + random(15);
+    let start = hue - random(10);
+    let end = hue + random(10);
     if (start < 0) {
       start = 100 + start;
     }
     if (end > 100) {
       end = end - 100;
     }
-    this.startColor = color(start, this.saturation, 65, 30);
-    this.endColor = color(start, this.saturation, 65, 60);
+    this.startColor = color(min(start, end), this.saturation, 65, 30);
+    this.endColor = color(max(start, end), this.saturation, 65, 60);
   }
   moveAndDisplay() {
     this.colorPosition += 0.05;

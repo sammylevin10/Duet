@@ -74,7 +74,7 @@ i {
 
 .playback-control {
   color: white;
-  font-size: 25px;
+  font-size: 22px;
   background-color: var(--black);
   border: none;
   padding: 0px 15px 0px 15px;
@@ -121,4 +121,10 @@ i {
 
 .right-container {
   margin-right: 25px;
+}
+
+#name {
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 0px;
 }

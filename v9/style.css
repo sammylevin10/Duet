@@ -1,0 +1,124 @@
+:root {
+  --white: #ffffff;
+  --black: #191414;
+  --primary-green: #1db954;
+  --secondary-green: #1ed760;
+}
+
+body {
+  margin: 0;
+  font-family: "Helvetica";
+  background-color: black;
+}
+
+#canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-wrapper {
+  background-color: grey;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  height: 300px;
+  width: 350px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  color: var(--primary-green);
+  background-color: var(--black);
+}
+
+.h1-modal {
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.p-modal {
+  font-size: 20px;
+  font-weight: lighter;
+  color: white;
+  text-align: center;
+  padding: 0px 10px 0px 10px;
+  margin: 0;
+}
+
+.spotify-button {
+  font-family: "Helvetica";
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-green);
+  border: none;
+  letter-spacing: 2px;
+  padding: 15px 30px 15px 30px;
+  margin: 5px;
+  border-radius: 25px;
+  transition: all 0.2s ease-in-out;
+}
+
+i {
+  margin: 0;
+  padding: 0;
+}
+
+.playback-control {
+  color: white;
+  font-size: 25px;
+  background-color: var(--black);
+  border: none;
+  padding: 0px 15px 0px 15px;
+  /* padding: 0px; */
+  transition: all 0.2s ease-in-out;
+  height: 75px;
+}
+
+#togglePlay {
+  color: white;
+  font-size: 50px;
+  /* margin-top: 30px; */
+}
+
+#previousTrack,
+#nextTrack {
+  font-size: 35px;
+  line-height: 50px;
+  /* margin-bottom: 20px; */
+}
+
+.spotify-button:hover {
+  background-color: var(--secondary-green);
+  transform: scale(1.05);
+}
+
+.spotify-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 100px;
+  color: white;
+  background: var(--black);
+}
+
+.left-container {
+  padding: 0px;
+  margin: 0px;
+  margin-left: 25px;
+}
+
+.right-container {
+  margin-right: 25px;
+}

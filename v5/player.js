@@ -1,60 +1,50 @@
 let playing = false;
-
-function getFormData(formId) {
-  const form = document.getElementById(formId);
-  const formData = new FormData(form);
-  return formData;
-}
+let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
+let currentTrackFeatures = {};
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
-const API_ENDPOINT = "https://api.spotify.com/v1/me";
+const PROFILE_ENDPOINT =
+  "https://api.spotify.com/v1/audio-features/11dFghVXANMlKmJXsNCbNl";
+let features_endpoint =
+  "https://api.spotify.com/v1/audio-features/" + currentTrackId;
 let ACCESS_TOKEN;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();
-  fetchProfileInformation();
+  fetchFeaturesInformation(features_endpoint);
 };
 
 function getCurrentQueryParameters(delimiter = "#") {
-  // the access_token is passed back in a URL fragment, not a query string
-  // errors, on the other hand are passed back in a query string
   const currentLocation = String(window.location).split(delimiter)[1];
   const params = new URLSearchParams(currentLocation);
   return params;
 }
 
-function updateProfileInformation(json) {
-  // const infoString = `Welcome back, ${json.id}!`;
-  // const profileInfoElement = document.querySelector("#profile_info");
-  const username = document.querySelector("#username");
-  const followers = document.querySelector("#followers");
-  // profileInfoElement.textContent = infoString;
-  username.textContent = `${json.id}`;
-  followers.textContent = `${json.followers.total} followers`;
-  // profileInfoElement.textContent = "aaaaa";
+function updateSongInformation(name, artist) {
+  const nameSelect = document.querySelector("#name");
+  const artistSelect = document.querySelector("#artist");
+  nameSelect.textContent = name;
+  artistSelect.textContent = artist;
 }
 
-function fetchProfileInformation() {
-  // console.log("FETCH");
+function fetchFeaturesInformation(endpoint) {
   const currentQueryParameters = getCurrentQueryParameters("#");
   ACCESS_TOKEN = currentQueryParameters.get("access_token");
-
   const fetchOptions = {
     method: "GET",
     headers: new Headers({
       Authorization: `Bearer ${ACCESS_TOKEN}`,
     }),
   };
-
-  fetch(API_ENDPOINT, fetchOptions)
+  fetch(endpoint, fetchOptions)
     .then(function (response) {
       // console.log(response);
       return response.json();
     })
     .then(function (json) {
-      // console.log(json);
-      updateProfileInformation(json);
-      // AFTER RECEIVING API RESONSE, FIRE UP SDK
+      currentTrackFeatures = json;
+      console.log("Current track features");
+      console.log(currentTrackFeatures);
     })
     .catch(function (error) {
       console.log(error);
@@ -62,11 +52,9 @@ function fetchProfileInformation() {
 }
 
 function startWebPlaybackSDK() {
-  // window.onSpotifyWebPlaybackSDKReady = () => {
   console.log("Starting Web Playback SDK");
-  // const token = "BQBc10XDlKyVNeTAXqUyqjdeiOSjCnMnj0-FE8auKYYdcmpkdX809eddC6ZychGwCqYwjLCRMb2AuEb1XoNGUaXD7l03YOyKjt5p0PzAjJUMs8souXKB3O4TNkjzgMCeXU9aSYD6jFjPgis_xIQW631blM_26B8FCEKeEA";
   const player = new Spotify.Player({
-    name: "Music Visualizer",
+    name: "Duet",
     getOAuthToken: (cb) => {
       cb(ACCESS_TOKEN);
     },
@@ -80,8 +68,15 @@ function startWebPlaybackSDK() {
     console.log(
       "Ready with Device ID " +
         device_id +
-        "Select the MusicVisualizer device in Spotify to begin playback."
+        "Select the Duet device in Spotify to begin playback."
     );
+    updateCurrentTrack(player);
+    player.getCurrentState().then((state) => {
+      console.log("state: " + state);
+      var current_track = state.track_window.current_track;
+      console.log("Currently Playing ", current_track);
+      console.log("Track id ", current_track.id);
+    });
   });
 
   // Not Ready
@@ -104,62 +99,74 @@ function startWebPlaybackSDK() {
   document.getElementById("togglePlay").onclick = function () {
     player.togglePlay().then(() => {
       playing = !playing;
-      // console.log("Playing: " + playing);
-      if (playing) {
-        document.getElementById("togglePlayIcon").className =
-          "fas fa-pause-circle";
-      } else {
-        document.getElementById("togglePlayIcon").className =
-          "fas fa-play-circle";
-      }
+      updateButton();
     });
-    // console.log("toggle");
 
     player.getCurrentState().then((state) => {
       if (!state) {
         playing = false;
         document.getElementById("togglePlayIcon").className =
           "fas fa-play-circle";
-        console.error("User is not playing music through the Web Playback SDK");
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
-
-      var current_track = state.track_window.current_track;
-      var next_track = state.track_window.next_tracks[0];
-
-      // console.log("Currently Playing", current_track);
-      // console.log("Playing Next", next_track);
+      updateCurrentTrack(player);
     });
   };
   document.getElementById("nextTrack").onclick = function () {
-    // console.log("next");
+    playing = true;
+    updateButton();
     player.nextTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
-        console.error("User is not playing music through the Web Playback SDK");
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
+      updateCurrentTrack(player);
     });
   };
   document.getElementById("previousTrack").onclick = function () {
-    // console.log("previous");
+    playing = true;
+    updateButton();
     player.previousTrack();
     player.getCurrentState().then((state) => {
       if (!state) {
-        console.error("User is not playing music through the Web Playback SDK");
-        window.alert(
-          "Open Spotify and select MusicVisualizer as the playback device"
-        );
+        window.alert("Open Spotify and select Duet as the playback device");
         return;
       }
+      updateCurrentTrack(player);
     });
   };
+}
+
+function updateCurrentTrack(player) {
+  player.getCurrentState().then((state) => {
+    currentTrackId = state.track_window.current_track.id;
+    updateSongInformation(
+      state.track_window.current_track.name,
+      state.track_window.current_track.artists[0].name
+    );
+    console.log(state.track_window.current_track);
+    console.log("Current Track ID updated to: " + currentTrackId);
+    features_endpoint =
+      "https://api.spotify.com/v1/audio-features/" + currentTrackId;
+    fetchFeaturesInformation(features_endpoint);
+  });
+}
+
+function updateButton() {
+  if (playing) {
+    document.getElementById("togglePlayIcon").className = "fas fa-pause-circle";
+  } else {
+    document.getElementById("togglePlayIcon").className = "fas fa-play-circle";
+  }
+}
+
+const buildButton = document.querySelector("button#hide-modal");
+buildButton.addEventListener("click", hideModal);
+
+function hideModal() {
+  document.querySelector(".center-wrapper").style.display = "none";
 }
 
 // p5 stuff
@@ -185,6 +192,8 @@ function setup() {
 }
 
 function draw() {
+  let energy = currentTrackFeatures.energy;
+  let acousticness = currentTrackFeatures.acousticness;
   background(0, 0, 0, 5);
   micLevel = mic.getLevel();
   // console.log(micLevel);
@@ -211,15 +220,17 @@ function draw() {
   // console.log(peakDetect.isDetected);
 
   if (peakDetect.isDetected) {
+    background(map(acousticness, 0, 1, 15, 85), 70, 90, 5);
     let bass;
-    bass = map(spectrum[250], 0, 255, 0, 100);
-    console.log("Bass: " + bass);
+    bass = map(spectrum[250], 0, 255, 0, 1);
     temp = new Bloom1(
       random(width / 5, (width * 4) / 5),
       random(height / 5, (height * 4) / 5),
       floor(random(5, 10)),
-      floor(400 * map(bass, 0, 100, 0, 1)),
-      map(bass, 0, 100, 0, 70)
+      floor(400 * map(bass, 0, 1, 0, 1)),
+      map(acousticness, 0, 1, 10, 90),
+      map(bass, 0, 1, 0, 90),
+      map(energy, 0, 1, -0.1, -0.6)
     );
     blooms.push(temp);
   }
@@ -237,24 +248,38 @@ function draw() {
 
 class Bloom1 {
   // x position, y position, rotation count, size
-  constructor(x, y, c, s, saturation) {
+  constructor(x, y, c, s, hue, saturation, acceleration) {
     this.x = x;
     this.y = y;
     this.c = c;
     this.s = s;
+    this.hue = hue;
     this.saturation = saturation;
     this.velocity = 5;
-    this.acceleration = -0.5;
+    this.acceleration = acceleration;
     this.rotation = 0;
     this.rotationVelocity = random(0.2, 1);
-    this.startColor = color(random(100), this.saturation, 65, 30);
-    this.endColor = color(random(100), this.saturation, 65, 60);
+    this.generateColors(hue);
+    // this.startColor = color(this.hue, this.saturation, 65, 30);
+    // this.endColor = color(random(100), this.saturation, 65, 60);
     this.colorPosition = 0;
     this.particles = [];
     for (let i = 0; i < random(10, 20); i++) {
       let temp = new Particle1(x, y, s / 5, this.startColor, this.endColor);
       this.particles.push(temp);
     }
+  }
+  generateColors(hue) {
+    let start = hue - random(10);
+    let end = hue + random(10);
+    if (start < 0) {
+      start = 100 + start;
+    }
+    if (end > 100) {
+      end = end - 100;
+    }
+    this.startColor = color(min(start, end), this.saturation, 65, 30);
+    this.endColor = color(max(start, end), this.saturation, 65, 60);
   }
   moveAndDisplay() {
     this.colorPosition += 0.05;

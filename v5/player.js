@@ -53,13 +53,15 @@ function fetchFeaturesInformation(endpoint) {
 
   fetch(endpoint, fetchOptions)
     .then(function (response) {
-      // console.log(response);
+      // console.log(response.json());
+      console.log(response);
+      // console.log(response.json());
       return response.json();
     })
     .then(function (json) {
-      // console.log(json);
-      currentTrackFeatures = json;
-      console.log("Current track features: " + currentTrackFeatures);
+      console.log(json);
+      console.log("Current track features");
+      console.log(currentTrackFeatures);
     })
     .catch(function (error) {
       console.log(error);

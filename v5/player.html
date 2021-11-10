@@ -43,26 +43,45 @@
     <!-- <div class="text" id="profile_info"></div> -->
     <a href="index.html">Debug p5 audio</a>
     <div class="center-wrapper">
-      <div class="modal">
+      <div class="modal" id="connect-modal">
         <h1 class="h1-modal">Connect Duet</h1>
         <p class="p-modal">
           In the Spotify devices menu, select "Duet" from the options
+        </p>
+        <p class="p-modal">
+          Listen using your speakers for the full visualization experience
         </p>
         <button class="spotify-button" id="hide-modal">
           I'M CONNECTED
         </button>
       </div>
     </div>
+    <div class="center-container">
+      <div id="playback-buttons">
+        <button id="previousTrack" class="playback-control">
+          <i class="fas fa-step-backward"></i>
+        </button>
+        <button id="togglePlay" class="playback-control">
+          <i id="togglePlayIcon" class="fas fa-play-circle"></i>
+        </button>
+        <button id="nextTrack" class="playback-control">
+          <i class="fas fa-step-forward"></i>
+        </button>
+      </div>
+    </div>
+
     <div id="canvas-container"></div>
 
     <div class="spotify-bar">
       <div class="left-container">
         <!-- <div id="album-cover"></div> -->
-        <img
-          src="https://i.scdn.co/image/ab67616d00001e02d5f86e2ed9a548e213030078"
-          id="album-cover"
-        />
-        <div id="playback-buttons">
+        <img src="" id="album-cover" />
+        <div id="song-info">
+          <p id="name"></p>
+          <p id="artist"></p>
+        </div>
+
+        <!-- <div id="playback-buttons">
           <button id="previousTrack" class="playback-control">
             <i class="fas fa-step-backward"></i>
           </button>
@@ -72,11 +91,7 @@
           <button id="nextTrack" class="playback-control">
             <i class="fas fa-step-forward"></i>
           </button>
-        </div>
-      </div>
-      <div class="right-container">
-        <p id="name"></p>
-        <p id="artist"></p>
+        </div> -->
       </div>
     </div>
   </body>

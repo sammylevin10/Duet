@@ -142,6 +142,10 @@ function startWebPlaybackSDK() {
 function updateCurrentTrack(player) {
   player.getCurrentState().then((state) => {
     currentTrackId = state.track_window.current_track.id;
+    let url = state.track_window.current_track.album.images[0].url;
+    console.log("URL: " + url);
+    let image = document.getElementById("album-cover");
+    image.src = url;
     updateSongInformation(
       state.track_window.current_track.name,
       state.track_window.current_track.artists[0].name

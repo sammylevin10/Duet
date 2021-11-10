@@ -71,8 +71,8 @@ class Bloom {
     this.acceleration = acceleration;
     this.rotation = 0;
     this.rotationVelocity = random(0.2, 1);
-    this.generateColors(hue);
     this.colorPosition = 0;
+    this.generateColors(hue);
     this.particles = [];
     // Create a few particles that spawn with the bloom
     for (let i = 0; i < random(10, 20); i++) {

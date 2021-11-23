@@ -1,7 +1,5 @@
 let playing = false;
 
-// p5 stuff
-
 // Sound
 let mic;
 let fft, peakDetect;
@@ -11,8 +9,8 @@ let sound;
 
 let blooms = [];
 
-function preload(){
-  sound = loadSound('testsong.mp3');
+function preload() {
+  sound = loadSound("testsong.mp3");
 }
 
 function setup() {
@@ -200,8 +198,6 @@ class Particle1 {
     this.yVelocity = random(-15, 15);
     this.xAcceleration = this.xVelocity * -1 * 0.01;
     this.yAcceleration = this.yVelocity * -1 * 0.01;
-
-
   }
   moveAndDisplay() {
     this.colorPosition += 0.05;
@@ -232,7 +228,6 @@ class Particle2 {
     this.endColor = startColor;
     this.colorPosition = 0;
 
-
     this.xVelocity = random(-15, 15);
     this.yVelocity = random(-15, 15);
     this.xAcceleration = this.xVelocity * -1 * 0.01;
@@ -246,7 +241,6 @@ class Particle2 {
 
     // let xMovement = map( noise(this.xVelocity), 0, 1, -1, 1 );
     // let yMovement = map( noise(this.yVelocity), 0, 1, -1, 1 );
-
 
     this.x += this.xVelocity;
     this.y += this.yVelocity;

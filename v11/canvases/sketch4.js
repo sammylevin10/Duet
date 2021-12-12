@@ -3,8 +3,12 @@
 
 function handleMessage(e) {
   console.log("CANVAS 4 RECEIVED MESSSAGE");
-  console.log(e.data);
-  // color = 255;
+  if (typeof e == "object") {
+    console.log("I received an object");
+    currentTrackFeatures = e;
+  } else {
+    console.log(e.data);
+  }
 }
 
 window.addEventListener('message', handleMessage, false);

@@ -9,7 +9,6 @@
 let playing = false;
 let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
 let currentTrackFeatures = {};
-let globalVariable = "abc";
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const PROFILE_ENDPOINT =
@@ -26,6 +25,13 @@ window.onload = function() {
     iframe.contentWindow.postMessage('Hello from main frame', '*');
   }
 };
+
+function sendToAllFrames(message) {
+  for (let i = 1; i <= 4; i++) {
+    let iframe = document.getElementById("canvas" + i);
+    iframe.contentWindow.postMessage(message, '*');
+  }
+}
 
 window.addEventListener('message', function(response) {
   // Make sure message is from our iframe, extensions like React dev tools might use the same technique and mess up our logs
@@ -73,6 +79,7 @@ function fetchFeaturesInformation(endpoint) {
     .then(function(json) {
       currentTrackFeatures = json;
       console.log(currentTrackFeatures);
+      sendToAllFrames(currentTrackFeatures);
     })
     .catch(function(error) {
       console.log(error);

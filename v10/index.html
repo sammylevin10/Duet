@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ex_MultipleCanvasElements</title>
+
+  <script src="index.js"></script>
+
+  <!-- custom CSS -->
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .canvas {
+      width: 100%;
+      height: 100%;
+      border: none;
+      /* overflow: hidden; */
+      display: block;
+      position: fixed;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+
+    /* #canvas2 {
+      display: block;
+    }
+
+    #canvas1 {
+      display: block;
+    } */
+
+    #toggleLibrary {
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      bottom: 0;
+    }
+
+    #library {
+      left: 0;
+      bottom: 50px;
+      width: 150;
+      height: 150;
+      /* background: black; */
+      background-color: red;
+      display: none;
+      position: fixed;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Multiple Canvas Elements (iframe technique)</h1>
+
+  <iframe class="canvas" id="canvas1" src="sketch1.html" scrolling="no"></iframe>
+  <iframe class="canvas" id="canvas2" src="sketch2.html" scrolling="no"></iframe>
+  <button id="toggleLibrary" onclick="toggleLibrary()">Visualization Library</button>
+  <div id="library">
+    <button type="button" onclick="toggleCanvas(1)">Circles</button>
+    <button type="button" onclick="toggleCanvas(2)">Squares</button>
+  </div>
+
+
+</body>
+
+</html>

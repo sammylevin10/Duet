@@ -1,0 +1,260 @@
+:root {
+  --white: #ffffff;
+  --black: #191414;
+  --primary-green: #1db954;
+  --secondary-green: #1ed760;
+}
+
+body {
+  margin: 0;
+  font-family: "Helvetica";
+  background-color: black;
+}
+
+#canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  height: 300px;
+  width: 350px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  color: var(--primary-green);
+  background-color: var(--black);
+}
+
+.h1-modal {
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.p-modal {
+  font-size: 20px;
+  font-weight: lighter;
+  color: white;
+  text-align: center;
+  padding: 0px 10px 0px 10px;
+  margin: 0;
+}
+
+.spotify-button {
+  font-family: "Helvetica";
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-green);
+  border: none;
+  letter-spacing: 2px;
+  padding: 15px 30px 15px 30px;
+  margin: 5px;
+  border-radius: 25px;
+  transition: all 0.2s ease-in-out;
+}
+
+i {
+  margin: 0;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+i:hover {
+  transform: scale(1.1);
+}
+
+.playback-control {
+  color: white;
+  font-size: 22px;
+  background-color: var(--black);
+  border: none;
+  padding: 0px 15px 0px 15px;
+  /* padding: 0px; */
+  transition: all 0.2s ease-in-out;
+  height: 75px;
+  margin-top: 10px;
+}
+
+#togglePlay {
+  color: white;
+  font-size: 50px;
+  /* margin-top: 30px; */
+}
+
+#previousTrack,
+#nextTrack {
+  font-size: 35px;
+  line-height: 50px;
+  /* margin-bottom: 20px; */
+}
+
+.spotify-button:hover {
+  background-color: var(--secondary-green);
+  transform: scale(1.05);
+}
+
+.spotify-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 100px;
+  color: white;
+  background: var(--black);
+}
+
+.left-container {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  padding: 0px;
+  margin: 0px;
+  /* margin-left: 25px; */
+}
+
+/* .right-container {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  padding: 0px;
+  margin: 0px;
+  background: pink;
+} */
+/* .right-container p {
+  color: white;
+} */
+#toggleLibrary {
+  position: fixed;
+  font-size: 50px;
+  right: 25px;
+  bottom: 20px;
+  color: white;
+  background-color: var(--black);
+  border: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+  /* background-color: pink; */
+}
+
+#toggleLibrary i {
+  padding: 0;
+  margin: 0;
+}
+
+#library {
+  width: 400px;
+  height: 400px;
+  position: fixed;
+  display: none;
+  align-items: column;
+  justify-content: space-around;
+  right: 0;
+  bottom: 100px;
+  background: var(--black);
+  padding: 15px;
+  margin: 0;
+}
+
+#library img {
+  width: 200px;
+  height: 200px;
+  /* display: block; */
+}
+
+.imgButton {
+  /* display: block; */
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+  /* border: 5px solid red; */
+  text-align: center;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.imgButton:hover {
+  transform: scale(1.05);
+}
+
+.imgRow {
+  width: 400px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+/* #toggleLibraryIcon {} */
+#song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 15px;
+  /* color: red; */
+  /* background-color: pink; */
+  /* border: 1px solid red; */
+}
+
+#playback-buttons {
+  margin-left: 20px;
+  display: flex;
+}
+
+a {
+  color: #444444;
+  text-decoration: none;
+  position: fixed;
+  z-index: 1;
+}
+
+#connect-modal {
+  margin-bottom: 110px;
+  padding: 20px;
+}
+
+.center-container {
+  /* background-color: pink; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  bottom: 10px;
+  z-index: 1;
+}
+
+#album-cover {
+  margin: 0;
+  height: 100px;
+  width: auto;
+}
+
+#name {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 0px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+#artist {
+  margin-top: 10px;
+  margin-left: 10px;
+}

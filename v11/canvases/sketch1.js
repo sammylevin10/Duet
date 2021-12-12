@@ -5,7 +5,7 @@ function handleMessage(e) {
   console.log("CANVAS 1 RECEIVED MESSSAGE");
   if (typeof e == "object") {
     console.log("I received an object");
-    currentTrackFeatures = e;
+    currentTrackFeatures = e.data;
   } else {
     console.log(e.data);
   }

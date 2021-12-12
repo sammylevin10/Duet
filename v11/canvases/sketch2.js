@@ -1,11 +1,10 @@
-// NOTE: this demo showcases how a p5 sketch can be used in conjunction with an
-// HTML document.  Please open up the 'index.html' file and refer to it as necessary
+let currentTrackFeatures = {};
 
 function handleMessage(e) {
   console.log("CANVAS 2 RECEIVED MESSSAGE");
   if (typeof e == "object") {
     console.log("I received an object");
-    currentTrackFeatures = e;
+    currentTrackFeatures = e.data;
   } else {
     console.log(e.data);
   }

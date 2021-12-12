@@ -22,6 +22,9 @@ body {
   animation-duration: 0.3s;
 }
 
+/* #canvas2, #canvas3, #canvas4 {
+  display: block;
+} */
 @keyframes iframe {
   from {
     /* bottom: 60px; */
@@ -184,8 +187,9 @@ i:hover {
 }
 
 #library {
-  width: 400px;
-  height: 400px;
+  width: 320px;
+  height: 320px;
+  border-radius: 20px 20px 0px 0px;
   position: fixed;
   display: none;
   align-items: column;
@@ -201,27 +205,27 @@ i:hover {
 }
 
 @keyframes library {
-  from {
+  0% {
     bottom: 60px;
     opacity: 0
   }
 
-  to {
+  100% {
     bottom: 100px;
     opacity: 1
   }
 }
 
 #library img {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   /* display: block; */
 }
 
 .imgButton {
   /* display: block; */
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   margin: 5px;
   /* border: 5px solid red; */
   text-align: center;

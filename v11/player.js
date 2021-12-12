@@ -9,6 +9,7 @@
 let playing = false;
 let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
 let currentTrackFeatures = {};
+let globalVariable = "abc";
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const PROFILE_ENDPOINT =
@@ -16,6 +17,33 @@ const PROFILE_ENDPOINT =
 let features_endpoint =
   "https://api.spotify.com/v1/audio-features/" + currentTrackId;
 let ACCESS_TOKEN;
+
+window.onload = function() {
+  var iframe1Window = document.getElementById('canvas1').contentWindow;
+  // iframe1Window.postMessage('Hello to iframe', '*');
+  iframe1Window.postMessage('Hello to iframe', '*');
+
+};
+var iframe1Window = document.getElementById('canvas1').contentWindow;
+// iframe1Window.postMessage('Hello to iframe', '*');
+iframe1Window.postMessage('Hello to iframe', '*');
+
+window.addEventListener('message', function(response) {
+  // Make sure message is from our iframe, extensions like React dev tools might use the same technique and mess up our logs
+  if (response.data && response.data.source === 'iframe') {
+    // Do whatever you want here.
+    console.log(response.data.message);
+  }
+});
+
+// let messageTarget = document.getElementById('canvas1');
+// console.log(messageTarget);
+// messageTarget.contentWindow.postMessage('testMessage', '*');
+// let body = messageTarget.contentWindow.document.getElementsByTagName("body")[0];
+// window.alert(body);
+// console.log("Body element from canvas1 iframe: ");
+// console.log(body.style);
+// body.style.borderColor = "red";
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();
@@ -198,32 +226,38 @@ function hideModal() {
 }
 
 const toggleLibraryButton = document.querySelector("button#toggleLibrary");
-console.log(toggleLibraryButton);
+// console.log(toggleLibraryButton);
 toggleLibraryButton.addEventListener("click", toggleLibrary);
 
 function toggleLibrary() {
   const library = document.querySelector("#library");
-  console.log(library.style.display);
+  // console.log(library.style.display);
   if (library.style.display == "none" || library.style.display == "") {
     library.style.display = "block";
   } else if (library.style.display == "block") {
     library.style.display = "none";
   }
-  console.log("clicked");
+  // console.log("clicked");
 }
 
 // const mode1Button = document.querySelector("#mode1");
 // mode1Button.addEventListener("click", toggleMode);
+
+// for (let i = 2; i <= 4; i++) {
+//   let iframe = document.getElementById("canvas" + i);
+//   console.log("hiding canvas " + i);
+//   iframe.style.display = "none";
+// }
 
 function toggleCanvas(num) {
   // window.alert("Clicked" + num);
   for (let i = 1; i <= 4; i++) {
     let iframe = document.getElementById("canvas" + i);
     if (i == num) {
-      console.log("display canvas " + i);
+      // console.log("display canvas " + i);
       iframe.style.display = "block";
     } else {
-      console.log("hide canvas " + i);
+      // console.log("hide canvas " + i);
       iframe.style.display = "none";
     }
   }

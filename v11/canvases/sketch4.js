@@ -6,7 +6,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // erase the background
-  background(0, 255, 0);
+  background(0, 0, 255);
 }
 
 function draw() {

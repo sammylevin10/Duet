@@ -1,6 +1,7 @@
 function toggleCanvas(id) {
   for (let i = 1; i <= 2; i++) {
     let iframe = document.getElementById("canvas" + i);
+    console.log(iframe);
     if (i == id) {
       console.log("display canvas " + i);
       iframe.style.display = "block";
@@ -20,3 +21,8 @@ function toggleLibrary() {
     library.style.display = "none";
   }
 }
+
+window.onload = function() {
+  let theFrame = document.getElementById("library");
+  console.log(theFrame);
+};

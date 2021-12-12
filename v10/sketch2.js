@@ -6,12 +6,12 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // erase the background
-  background(0);
+  background(0, 255, 0);
 }
 
 function draw() {
   // just draw some random rectangles
-  fill(random(255));
-  rectMode(CENTER);
-  rect(random(25, width - 25), random(25, height - 25), 25, 25);
+  // fill(random(255));
+  // rectMode(CENTER);
+  // rect(random(25, width - 25), random(25, height - 25), 25, 25);
 }

@@ -6,11 +6,11 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // erase the background
-  background(0);
+  background(255, 0, 0);
 }
 
 function draw() {
   // just draw some random ellipses
-  fill(random(255));
-  ellipse(random(25, width - 25), random(25, height - 25), 25, 25);
+  // fill(random(255));
+  // ellipse(random(25, width - 25), random(25, height - 25), 25, 25);
 }

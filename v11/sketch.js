@@ -27,7 +27,7 @@ function draw() {
   // Current track features extracted from Spotify
   let energy = currentTrackFeatures.energy;
   let acousticness = currentTrackFeatures.acousticness;
-  background(0, 0, 0, 5);
+  background(50, 50, 50, 5);
   micLevel = mic.getLevel();
   let spectrum = fft.analyze();
   peakDetect.update(fft);

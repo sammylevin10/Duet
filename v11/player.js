@@ -215,6 +215,17 @@ function toggleLibrary() {
 // const mode1Button = document.querySelector("#mode1");
 // mode1Button.addEventListener("click", toggleMode);
 
-function toggleMode(num) {
-  window.alert("Clicked" + num);
+function toggleCanvas(num) {
+  // window.alert("Clicked" + num);
+  for (let i = 1; i <= 4; i++) {
+    let iframe = document.getElementById("canvas" + i);
+    if (i == num) {
+      console.log("display canvas " + i);
+      iframe.style.display = "block";
+    } else {
+      console.log("hide canvas " + i);
+      iframe.style.display = "none";
+    }
+  }
+  toggleLibrary();
 }

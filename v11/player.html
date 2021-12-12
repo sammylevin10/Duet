@@ -60,7 +60,11 @@ Handles in-browser playback and music visualization via p5
     </div>
   </div>
 
-  <div id="canvas-container"></div>
+  <!-- <iframe id="canvas-container"></iframe> -->
+  <iframe class="canvas" id="canvas1" src="canvases/sketch1.html" scrolling="no"></iframe>
+  <iframe class="canvas" id="canvas2" src="canvases/sketch2.html" scrolling="no"></iframe>
+  <iframe class="canvas" id="canvas3" src="canvases/sketch3.html" scrolling="no"></iframe>
+  <iframe class="canvas" id="canvas4" src="canvases/sketch4.html" scrolling="no"></iframe>
 
   <div class="spotify-bar">
     <div class="left-container">
@@ -80,21 +84,21 @@ Handles in-browser playback and music visualization via p5
   <div id="library">
     <!-- <p>Visualization Library</p> -->
     <div class="imgRow">
-      <div class="imgButton" onclick="toggleMode(1)" id="mode1">
+      <div class="imgButton" onclick="toggleCanvas(1)">
         <!-- <p class="imgButtonText">Mode 1</p> -->
         <img src="assets/placeholder.png">
       </div>
-      <div class="imgButton" onclick="toggleMode(2)" id="mode2">
+      <div class="imgButton" onclick="toggleCanvas(2)">
         <!-- <p class="imgButtonText">Mode 2</p> -->
         <img src="assets/placeholder.png">
       </div>
     </div>
     <div class="imgRow">
-      <div class="imgButton" onclick="toggleMode(3)" id="mode3">
+      <div class="imgButton" onclick="toggleCanvas(3)">
         <!-- <p class="imgButtonText">Mode 3</p> -->
         <img src="assets/placeholder.png">
       </div>
-      <div class="imgButton" onclick="toggleMode(4)" id="mode4">
+      <div class="imgButton" onclick="toggleCanvas(4)">
         <!-- <p class="imgButtonText">Mode 4</p> -->
         <img src="assets/placeholder.png">
       </div>

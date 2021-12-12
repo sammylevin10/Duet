@@ -19,14 +19,9 @@ let features_endpoint =
 let ACCESS_TOKEN;
 
 window.onload = function() {
-  var iframe1Window = document.getElementById('canvas1').contentWindow;
-  // iframe1Window.postMessage('Hello to iframe', '*');
-  iframe1Window.postMessage('Hello to iframe', '*');
-
+  var canvas1 = document.getElementById('canvas1').contentWindow;
+  canvas1.postMessage('Hello to iframe', '*');
 };
-var iframe1Window = document.getElementById('canvas1').contentWindow;
-// iframe1Window.postMessage('Hello to iframe', '*');
-iframe1Window.postMessage('Hello to iframe', '*');
 
 window.addEventListener('message', function(response) {
   // Make sure message is from our iframe, extensions like React dev tools might use the same technique and mess up our logs
@@ -35,15 +30,6 @@ window.addEventListener('message', function(response) {
     console.log(response.data.message);
   }
 });
-
-// let messageTarget = document.getElementById('canvas1');
-// console.log(messageTarget);
-// messageTarget.contentWindow.postMessage('testMessage', '*');
-// let body = messageTarget.contentWindow.document.getElementsByTagName("body")[0];
-// window.alert(body);
-// console.log("Body element from canvas1 iframe: ");
-// console.log(body.style);
-// body.style.borderColor = "red";
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();

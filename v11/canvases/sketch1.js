@@ -65,7 +65,7 @@ function setup() {
   fft = new p5.FFT();
   fft.setInput(mic);
   // Min frequency, max frequency, amplitude threshold, frames to wait
-  peakDetect = new p5.PeakDetect(20, 300, 0.5, 40);
+  peakDetect = new p5.PeakDetect(20, 300, 0.4, 40);
   colorMode(HSB, 100, 100, 100, 100);
 }
 
@@ -73,7 +73,7 @@ function draw() {
   // Current track features extracted from Spotify
   let energy = currentTrackFeatures.energy;
   let acousticness = currentTrackFeatures.acousticness;
-  background(0, 100, 100, 5);
+  background(0, 0, 0, 5);
   micLevel = mic.getLevel();
   // console.log(micLevel);
   let spectrum = fft.analyze();
@@ -86,19 +86,22 @@ function draw() {
   // When a peak is detected, create a bloom with parameters that are responsive to track features and FFT features
   if ((peakDetect.isDetected) && currentTrackFeatures != {}) {
 
-    console.log("CURRENT TRACK FEATURES");
-    console.log(currentTrackFeatures);
+    // console.log("CURRENT TRACK FEATURES");
+    // console.log(currentTrackFeatures.acousticness);
+    // console.log(currentTrackFeatures.energy);
     background(map(acousticness, 0, 1, 15, 85), 70, 90, 5);
     let bass;
     bass = map(spectrum[250], 0, 255, 0, 1);
+    console.log(bass);
     temp = new Bloom(
       random(width / 5, (width * 4) / 5),
       random(height / 5, (height * 4) / 5),
-      floor(random(5, 10)),
-      floor(400 * map(bass, 0, 1, 0, 1)),
+      floor(random(6, 10)),
+      floor(600 * map(bass, 0, 1, 0.4, 1)),
       map(acousticness, 0, 1, 10, 90),
-      map(bass, 0, 1, 0, 90),
-      map(energy, 0, 1, -0.1, -0.6)
+      // random(10, 90),
+      map(bass, 0, 1, 60, 90),
+      map(energy, 0, 1, -0.3, -0.6)
     );
     blooms.push(temp);
   }
@@ -136,6 +139,7 @@ class Bloom {
   }
   // Creates a starting and ending color loosely based off of the hue param
   generateColors(hue) {
+    // let hue = random(15, 85);
     let start = hue - random(10);
     let end = hue + random(10);
     if (start < 0) {
@@ -146,6 +150,8 @@ class Bloom {
     }
     this.startColor = color(min(start, end), this.saturation, 65, 30);
     this.endColor = color(max(start, end), this.saturation, 65, 60);
+    console.log(this.startColor);
+    console.log(this.endColor);
   }
   moveAndDisplay() {
     // Advance the color over time

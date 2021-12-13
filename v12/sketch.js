@@ -1,70 +1,39 @@
-let currentTrackFeatures = {};
-
 // A Frame
 let world;
 
 // Color
-let targetHue = 50;
 let hue;
-let hueVelocity = 0.05;
 let lightness = 50;
 let minLightness = 50;
 let maxLightness = 60;
 
 // Sound
-let mic, fft, peakDetect, peakDetected, amplitude, currLevel, song;
+let fft, peakDetect, peakDetected, amplitude, currLevel, song;
 
 // Blooms
 let blooms = [];
 let bloomsCount = 15;
 
-function handleMessage(e) {
-  // console.log("CANVAS 2 RECEIVED MESSSAGE");
-  if (typeof e == "object") {
-    // console.log("I received an object");
-    currentTrackFeatures = e.data;
-    targetHue = map(currentTrackFeatures.acousticness, 0, 1, 10, 90);
-    hue = targetHue;
-  } else {
-    // console.log(e.data);
-  }
+function preload() {
+  song = loadSound("assets/sound/song1.mp3");
 }
 
-window.addEventListener('message', handleMessage, false);
-
-const _log = console.log;
-console.log = function(...rest) {
-  window.parent.postMessage({
-      source: 'iframe',
-      message: rest,
-    },
-    '*'
-  );
-  _log.apply(console, arguments);
-};
-
-// function preload() {
-//   song = loadSound("../assets/sound/song1.mp3");
-// }
-
 function setup() {
+  window.alert("Use the enter key to play/pause the music.");
+
   // Canvas
   let canvas = createCanvas(5376, 2688).id();
-
-  // hue = random(100);
+  hue = random(100);
   colorMode(HSL, 100, 100, 100, 100);
 
   // Sound
-  // fft = new p5.FFT();
-  // peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
-  // song.play();
-  mic = new p5.AudioIn();
-  mic.start();
-  fft = new p5.FFT();
-  fft.setInput(mic);
-  // Min frequency, max frequency, amplitude threshold, frames to wait
-  peakDetect = new p5.PeakDetect(20, 300, 0.4, 40);
-  // amplitude = new p5.Amplitude();
+  //fft = new p5.FFT();
+  fft = new p5.FFT(0.9, 128);
+  w = width/64;
+
+  peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
+  song.play();
+  amplitude = new p5.Amplitude();
 
   // A-Frame
   world = new World('VRScene');
@@ -79,21 +48,12 @@ function setup() {
 }
 
 function draw() {
-  // Sound
-  currLevel = mic.getLevel();
-  let spectrum = fft.analyze();
-  peakDetect.update(fft);
-
   // Sky color
-  hue += hueVelocity;
-  if (hue > (targetHue + 10)) {
-    hueVelocity *= -1;
-    hue = targetHue + 9.5;
-  } else if (hue < (targetHue - 10)) {
-    hueVelocity *= -1;
-    hue = targetHue - 9.5;
+  hue += 0.05;
+  if (hue > 100) {
+    hue = 0;
   }
-  background(hue, 50, lightness);
+  background(hue, 70, lightness);
   if (peakDetected) {
     lightness -= 1;
     if (lightness < minLightness) {
@@ -101,35 +61,56 @@ function draw() {
       lightness = minLightness;
     }
   }
-
-  if (peakDetect.isDetected) {
-    for (let i = 0; i < bloomsCount; i++) {
-      let position = generateBloomPosition();
-      // x, y, z, count, size, hue, saturation, acceleration
-      let temp = new Bloom(
-        random(position.x - 50, position.x + 50),
-        random(position.y - 50, position.y + 50),
-        random(position.z - 50, position.z + 50),
-        random(3, 7),
-        2.2,
-        targetHue,
-        80,
-        -0.01);
-      blooms.push(temp);
-    }
-    peakDetected = true;
-    lightness = maxLightness;
+  var spectrum = fft.analyze();
+  for (var i = 0; i < spectrum.length; i++) {
+    var angle = map(i, 0, spectrum.length, 0, 64);
+    var amp = spectrum[i];
+    var r = map(amp, 0, 256, 20, 100);
+    //fill(100, 100, 100);
+    //var x = r * cos(angle);
+    //var y = r * sin(angle);
+    stroke(i, i, 100);
+    //line(0, 0, x, y);
+    //vertex(x, y);
+    var y = map(amp, 0, 256, height, 0);
+    rect(i * w, y, w - 2, height - y);
   }
+
+  // circle primitive
+  var c = new Circle({
+            x: 2, y:2, z:0,
+            radius: 1,
+            red:random(255), green:random(255), blue:random(255),
+            side:'double'
+          });
+  world.add(c);
+
+
+  
+
+  // Sound
+  // currLevel = amplitude.getLevel();
+  // let spectrum = fft.analyze();
+  // peakDetect.update(fft);
+  // if (peakDetect.isDetected) {
+  //   for (let i = 0; i < bloomsCount; i++) {
+  //     let position = generateBloomPosition();
+  //     let temp = new Bloom(random(position.x - 50, position.x + 50), random(position.y - 50, position.y + 50), random(position.z - 50, position.z + 50), random(3, 7), 2.2, hue, 80, -0.01);
+  //     blooms.push(temp);
+  //   }
+  //   peakDetected = true;
+  //   lightness = maxLightness;
+  // }
 
   // Movement and garbage collection
-  for (let i = 0; i < blooms.length; i++) {
-    blooms[i].move();
-    if (blooms[i].isDead() == true) {
-      blooms[i].remove();
-      blooms.splice(i, 1);
-      i--;
-    }
-  }
+  // for (let i = 0; i < blooms.length; i++) {
+  //   blooms[i].move();
+  //   if (blooms[i].isDead() == true) {
+  //     blooms[i].remove();
+  //     blooms.splice(i, 1);
+  //     i--;
+  //   }
+  // }
 }
 
 // Enables Blooms to spawn near but not overtop a user
@@ -156,16 +137,16 @@ function generateBloomPosition() {
   return coords;
 }
 
-// // Pressing enter starts/stops music;
-// function keyPressed() {
-//   if (keyIsDown(13)) {
-//     if (song.isPlaying()) {
-//       song.pause();
-//     } else {
-//       song.play();
-//     }
-//   }
-// }
+// Pressing enter starts/stops music;
+function keyPressed() {
+  if (keyIsDown(13)) {
+    if (song.isPlaying()) {
+      song.pause();
+    } else {
+      song.play();
+    }
+  }
+}
 
 // Particles eminate from Blooms
 class Particle {
@@ -224,7 +205,7 @@ class Bloom {
     this.shapes = [];
     this.particles = [];
     this.amplitude;
-    let levelWithRandom = map(currLevel, 0, 0.1, 0, 1) + random(-0.1, 0.1);
+    let levelWithRandom = currLevel + random(-0.1, 0.1);
 
     for (let i = 0; i < 5; i++) {
       let temp = new Particle(this.x, this.y, this.z);
@@ -278,7 +259,7 @@ class Bloom {
           that.hoverAction();
         }
       });
-    } else if (levelWithRandom < 0.3) {
+    } else if (levelWithRandom < 0.4) {
       shape = new Octahedron({
         x: 0,
         y: 0,
@@ -329,7 +310,7 @@ class Bloom {
   // Blooms that are hovered over will decay slower and spin
   hoverAction() {
     for (let i = 0; i < this.shapes.length; i++) {
-      this.speed -= (this.acceleration * 0.3);
+      this.speed -= (this.acceleration * 0.6);
       this.shapes[i].spinX(2);
       this.shapes[i].spinY(2);
       this.shapes[i].spinZ(2);
@@ -337,7 +318,6 @@ class Bloom {
   }
 
   generateColors(hue) {
-    console.log(hue);
     let start = hue - random(10);
     let end = hue + random(10);
     if (start < 0) {

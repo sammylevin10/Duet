@@ -1,10 +1,26 @@
 let currentTrackFeatures = {};
 
+// A Frame
+let world;
+
+// Color
+let targetHue = 50;
+let hue;
+let hueVelocity = 0.05;
+let lightness = 50;
+let minLightness = 50;
+let maxLightness = 60;
+
+// Sound
+let fft, peakDetect, peakDetected, currLevel, song;
+
 function handleMessage(e) {
   // console.log("CANVAS 3 RECEIVED MESSSAGE");
   if (typeof e == "object") {
     // console.log("I received an object");
     currentTrackFeatures = e.data;
+    targetHue = map(currentTrackFeatures.acousticness, 0, 1, 10, 90);
+    hue = targetHue;
   } else {
     // console.log(e.data);
   }
@@ -23,17 +39,81 @@ console.log = function(...rest) {
   _log.apply(console, arguments);
 };
 
-function setup() {
-  // create our canvas
-  createCanvas(windowWidth, windowHeight);
 
-  // erase the background
-  background(255, 0, 0);
+
+function preload() {
+  // song = loadSound("assets/sound/song1.mp3");
+}
+
+function setup() {
+  // Canvas
+  let canvas = createCanvas(5376, 2688).id();
+  hue = random(100);
+  colorMode(HSL, 100, 100, 100, 100);
+
+  // Sound
+  mic = new p5.AudioIn();
+  mic.start();
+  fft = new p5.FFT();
+  fft.setInput(mic);
+  // Min frequency, max frequency, amplitude threshold, frames to wait
+  peakDetect = new p5.PeakDetect(20, 300, 0.4, 40);
+
+  w = width / 64;
+
+  // peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
+  // song.play();
+  // amplitude = new p5.Amplitude();
+
+  // A-Frame
+  world = new World('VRScene');
+  // Sky with dynamic texture
+  let sky = new Sky({
+    asset: canvas,
+    dynamicTexture: true,
+    dynamicTextureWidth: 5376,
+    dynamicTextureHeight: 2688
+  });
+  world.add(sky);
 }
 
 function draw() {
-  // just draw some random rectangles
-  fill(random(255));
-  // rectMode(CENTER);
-  // rect(random(25, width - 25), random(25, height - 25), 25, 25);
+  // Sound
+  currLevel = mic.getLevel();
+  let spectrum = fft.analyze();
+  peakDetect.update(fft);
+  spectrum = fft.analyze();
+
+  // Sky color
+  hue += hueVelocity;
+  if (hue > (targetHue + 10)) {
+    hueVelocity *= -1;
+    hue = targetHue + 9.5;
+  } else if (hue < (targetHue - 10)) {
+    hueVelocity *= -1;
+    hue = targetHue - 9.5;
+  }
+  background(hue, 50, lightness);
+  if (peakDetected) {
+    lightness -= 1;
+    if (lightness < minLightness) {
+      peakDetected = false;
+      lightness = minLightness;
+    }
+  }
+
+  if (peakDetect.isDetected) {
+    peakDetected = true;
+    lightness = maxLightness;
+  }
+
+  for (var i = 0; i < spectrum.length; i++) {
+    var amp = spectrum[i];
+    var r = map(amp, 0, 256, 20, 100);
+    fill(map(i, 0, spectrum.length, 0, 2000), 50, 50);
+    // console.log(hue);
+    // stroke(i, i, 100);
+    var y = map(amp, 0, 256, height, 0);
+    rect(i * w, y, w - 2, height - y);
+  }
 }

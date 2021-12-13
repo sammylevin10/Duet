@@ -3,10 +3,14 @@
 
 <head>
   <!-- the standard p5 drawing and animation library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../p5/p5.js"></script>
+  <script src="../p5/addons/p5.sound.js"></script>
 
-  <!-- you can also load the p5 library from a local javascript file if you want to host it yourself (uncomment the following 'script' tag)-->
-  <!--script src="../js/p5.js"></script -->
+  <!-- A-Frame core library -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+  <!-- AFrameP5 library -->
+  <script src="https://craignyu.github.io/aframep5/libraries/aframep5-v2.1.js"></script>
 
   <!-- your custom sketch file -->
   <script src="sketch3.js"></script>
@@ -21,6 +25,9 @@
 </head>
 
 <body>
+  <a-scene id="VRScene">
+
+  </a-scene>
 </body>
 
 </html>

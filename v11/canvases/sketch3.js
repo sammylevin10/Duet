@@ -15,7 +15,7 @@ let maxLightness = 30;
 let fft, peakDetect, peakDetected, currLevel, song;
 
 function handleMessage(e) {
-  // console.log("CANVAS 3 RECEIVED MESSSAGE");
+  console.log("CANVAS 3 RECEIVED MESSSAGE");
   if (typeof e == "object") {
     // console.log("I received an object");
     currentTrackFeatures = e.data;

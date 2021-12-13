@@ -21,7 +21,7 @@ let ACCESS_TOKEN;
 window.onload = function() {
   // var canvas1 = document.getElementById('canvas1').contentWindow;
   // canvas1.postMessage('Hello to iframe', '*');
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 3; i++) {
     let iframe = document.getElementById("canvas" + i);
     iframe.contentWindow.postMessage('Hello from main frame', '*');
   }

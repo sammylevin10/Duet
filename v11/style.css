@@ -22,13 +22,6 @@ body {
   animation-duration: 0.3s;
 }
 
-#canvas2 {
-  height: 100vh - 100px;
-}
-
-/* #canvas2, #canvas3, #canvas4 {
-  display: block;
-} */
 @keyframes iframe {
   from {
     /* bottom: 60px; */
@@ -191,15 +184,15 @@ i:hover {
 }
 
 #library {
-  width: 420px;
-  height: 420px;
+  width: 660px;
+  height: 220px;
   border-radius: 20px 20px 0px 0px;
   position: fixed;
   display: none;
   align-items: column;
   justify-content: space-around;
-  right: 0;
-  bottom: 100px;
+  right: 10px;
+  bottom: 80px;
   background: var(--black);
   padding: 15px;
   margin: 0;
@@ -215,7 +208,7 @@ i:hover {
   }
 
   100% {
-    bottom: 100px;
+    bottom: 80px;
     opacity: 1
   }
 }
@@ -223,14 +216,16 @@ i:hover {
 #library img {
   width: 200px;
   height: 200px;
+  border-radius: 10px;
   /* display: block; */
 }
 
 .imgButton {
   /* display: block; */
+  border-radius: 20px;
   width: 200px;
   height: 200px;
-  margin: 5px;
+  margin: 10px;
   /* border: 5px solid red; */
   text-align: center;
   color: white;

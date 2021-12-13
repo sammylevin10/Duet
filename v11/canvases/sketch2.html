@@ -2,8 +2,15 @@
 <html>
 
 <head>
-  <!-- the standard p5 drawing and animation library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../p5/p5.js"></script>
+  <script src="../p5/addons/p5.sound.js"></script>
+
+  <!-- A-Frame core library -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+  <!-- AFrameP5 library -->
+  <script src="https://craignyu.github.io/aframep5/libraries/aframep5-v2.1.js"></script>
+
 
   <!-- you can also load the p5 library from a local javascript file if you want to host it yourself (uncomment the following 'script' tag)-->
   <!--script src="../js/p5.js"></script -->
@@ -21,6 +28,36 @@
 </head>
 
 <body>
+  <a-scene id="VRScene">
+
+    <!--
+		       The 'a-assets' container is used to load in any external artwork you may want to use as "textures" for your objects. Ensure that this element has an ID of 'VRAssets'
+
+		       Textures can be loaded by creating a new 'a-asset' tag inside of the 'a-assets' container.
+		       When doing this you will need to make sure to give your textures a unique ID -
+		       this will be used by p5 to create new objects.
+
+		       Example:
+
+		       <img id="ITEM_ID_GOES_HERE" src="images/gold_block.png">
+				-->
+
+    <a-assets id="VRAssets">
+
+      <!-- <img id="stone" src="images/stonebrick_mossy.png"> -->
+
+      <!-- in A-Frame we can support two different types of 3D models - OBJ and GLTF -->
+
+      <!-- this file points to an OBJ model -->
+      <!-- <img src="assets/images/equirectangular_spain1.jpg" id="sky1"> -->
+      <a-asset-item id="icosahedron" src="../assets/models/ico.obj"></a-asset-item>
+      <a-asset-item id="material" src="../assets/models/materials.mtl"></a-asset-item>
+      <!-- <a-asset-item id="icosahedron2" src="assets/models/icosahedron.gltf"></a-asset-item> -->
+
+    </a-assets>
+
+  </a-scene>
+
 </body>
 
 </html>

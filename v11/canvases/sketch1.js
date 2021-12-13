@@ -80,26 +80,22 @@ function draw() {
   peakDetect.update(fft);
 
   if (peakDetect.isDetected) {
-    console.log("DETECT");
+    // console.log("DETECT");
   }
 
   // When a peak is detected, create a bloom with parameters that are responsive to track features and FFT features
   if ((peakDetect.isDetected) && currentTrackFeatures != {}) {
 
-    // console.log("CURRENT TRACK FEATURES");
-    // console.log(currentTrackFeatures.acousticness);
-    // console.log(currentTrackFeatures.energy);
     background(map(acousticness, 0, 1, 15, 85), 70, 90, 5);
     let bass;
     bass = map(spectrum[250], 0, 255, 0, 1);
-    console.log(bass);
+    // x, y, c, s, hue, saturation, acceleration
     temp = new Bloom(
       random(width / 5, (width * 4) / 5),
       random(height / 5, (height * 4) / 5),
       floor(random(6, 10)),
       floor(600 * map(bass, 0, 1, 0.4, 1)),
       map(acousticness, 0, 1, 10, 90),
-      // random(10, 90),
       map(bass, 0, 1, 60, 90),
       map(energy, 0, 1, -0.3, -0.6)
     );
@@ -139,6 +135,7 @@ class Bloom {
   }
   // Creates a starting and ending color loosely based off of the hue param
   generateColors(hue) {
+    // console.log(hue);
     // let hue = random(15, 85);
     let start = hue - random(10);
     let end = hue + random(10);
@@ -150,8 +147,8 @@ class Bloom {
     }
     this.startColor = color(min(start, end), this.saturation, 65, 30);
     this.endColor = color(max(start, end), this.saturation, 65, 60);
-    console.log(this.startColor);
-    console.log(this.endColor);
+    // console.log(this.startColor);
+    // console.log(this.endColor);
   }
   moveAndDisplay() {
     // Advance the color over time

@@ -9,6 +9,7 @@
 let playing = false;
 let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
 let currentTrackFeatures = {};
+let mic;
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const PROFILE_ENDPOINT =
@@ -40,6 +41,16 @@ window.addEventListener('message', function(response) {
     console.log(response.data.message);
   }
 });
+
+// function setup() {
+//   mic = new p5.AudioIn();
+//   mic.start();
+// }
+//
+// function draw() {
+//   let vol = mic.getLevel();
+//   console.log(vol);
+// }
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();

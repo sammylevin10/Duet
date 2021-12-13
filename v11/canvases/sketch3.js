@@ -1,12 +1,12 @@
 let currentTrackFeatures = {};
 
 function handleMessage(e) {
-  console.log("CANVAS 3 RECEIVED MESSSAGE");
+  // console.log("CANVAS 3 RECEIVED MESSSAGE");
   if (typeof e == "object") {
-    console.log("I received an object");
+    // console.log("I received an object");
     currentTrackFeatures = e.data;
   } else {
-    console.log(e.data);
+    // console.log(e.data);
   }
 }
 

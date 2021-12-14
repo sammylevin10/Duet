@@ -25,6 +25,7 @@ window.onload = function() {
   }
 };
 
+// Function for sending information to iframes via postMessage api
 function sendToAllFrames(message) {
   for (let i = 1; i <= 4; i++) {
     let iframe = document.getElementById("canvas" + i);
@@ -32,6 +33,7 @@ function sendToAllFrames(message) {
   }
 }
 
+// Listen to messages from iframes
 window.addEventListener('message', function(response) {
   if (response.data && response.data.source === 'iframe') {}
 });

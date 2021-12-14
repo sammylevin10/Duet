@@ -14,6 +14,7 @@ let maxLightness = 30;
 // Sound
 let fft, peakDetect, peakDetected, currLevel, song;
 
+// Handle track features passed to by parent frame
 function handleMessage(e) {
   console.log("CANVAS 3 RECEIVED MESSSAGE");
   if (typeof e == "object") {
@@ -25,6 +26,7 @@ function handleMessage(e) {
 
 window.addEventListener('message', handleMessage, false);
 
+// Pass console logs to parent frame
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({
@@ -94,6 +96,7 @@ function draw() {
     peakDetected = true;
     lightness = maxLightness;
   }
+  // For each frequency in the spectrum, graph the amplitude as a rectangle
   for (var i = 0; i < spectrum.length; i++) {
     var amp = spectrum[i];
     if (i < 32) {

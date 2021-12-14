@@ -14,6 +14,7 @@ let maxLightness = 30;
 // Sound
 let fft, peakDetect, peakDetected, currLevel, song;
 
+// Console logs are passed to parent window
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({
@@ -24,8 +25,6 @@ console.log = function(...rest) {
   );
   _log.apply(console, arguments);
 };
-
-function preload() {}
 
 function setup() {
   // Canvas
@@ -85,6 +84,7 @@ function draw() {
     peakDetected = true;
     lightness = maxLightness;
   }
+  // For each frequency in the spectrum, graph the amplitude
   for (var i = 0; i < spectrum.length; i++) {
     var amp = spectrum[i];
     if (i < 32) {

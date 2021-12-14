@@ -18,6 +18,7 @@ let mic, fft, peakDetect, peakDetected, amplitude, currLevel, song;
 let blooms = [];
 let bloomsCount = 15;
 
+// Track features are received from parent iframe
 function handleMessage(e) {
   if (typeof e == "object") {
     currentTrackFeatures = e.data;
@@ -28,6 +29,7 @@ function handleMessage(e) {
 
 window.addEventListener('message', handleMessage, false);
 
+// Console logs are sent to parent window
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({
@@ -71,7 +73,7 @@ function draw() {
   let spectrum = fft.analyze();
   peakDetect.update(fft);
 
-  // Sky color
+  // Sky color changes over time
   hue += hueVelocity;
   if (hue > (targetHue + 10)) {
     hueVelocity *= -1;
@@ -89,6 +91,7 @@ function draw() {
     }
   }
 
+  // Create blooms when peak is detected
   if (peakDetect.isDetected) {
     for (let i = 0; i < bloomsCount; i++) {
       let position = generateBloomPosition();

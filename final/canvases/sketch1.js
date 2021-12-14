@@ -2,6 +2,7 @@ let currentTrackFeatures = {};
 let mic, fft, peakDetect, amplitude;
 let blooms = [];
 
+// Store track features when receiving them
 function handleMessage(e) {
   if (typeof e == "object") {
     currentTrackFeatures = e.data;
@@ -10,6 +11,7 @@ function handleMessage(e) {
 
 window.addEventListener('message', handleMessage, false);
 
+// Console logs are passed to parent iframe
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({

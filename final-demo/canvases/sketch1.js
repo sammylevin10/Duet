@@ -8,6 +8,7 @@ let blooms = [];
 
 window.addEventListener('message', handleMessage, false);
 
+// Pass console logs to parent window
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({
@@ -19,6 +20,7 @@ console.log = function(...rest) {
   _log.apply(console, arguments);
 };
 
+// Handle track features received from parent window
 function handleMessage(e) {
   window.alert("CANVAS 1 RECEIVED MESSSAGE");
   console.log(e.data);

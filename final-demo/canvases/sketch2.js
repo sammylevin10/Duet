@@ -18,6 +18,7 @@ let mic, fft, peakDetect, peakDetected, amplitude, currLevel, song;
 let blooms = [];
 let bloomsCount = 15;
 
+// Pass console logs to parent window
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({

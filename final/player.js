@@ -9,6 +9,7 @@
 let playing = false;
 let currentTrackId = "11dFghVXANMlKmJXsNCbNl";
 let currentTrackFeatures = {};
+let mic;
 
 const AUTH_BASE_URL = "https://accounts.spotify.com/authorize";
 const PROFILE_ENDPOINT =
@@ -16,6 +17,24 @@ const PROFILE_ENDPOINT =
 let features_endpoint =
   "https://api.spotify.com/v1/audio-features/" + currentTrackId;
 let ACCESS_TOKEN;
+
+window.onload = function() {
+  for (let i = 1; i <= 3; i++) {
+    let iframe = document.getElementById("canvas" + i);
+    iframe.contentWindow.postMessage('Hello from main frame', '*');
+  }
+};
+
+function sendToAllFrames(message) {
+  for (let i = 1; i <= 4; i++) {
+    let iframe = document.getElementById("canvas" + i);
+    iframe.contentWindow.postMessage(message, '*');
+  }
+}
+
+window.addEventListener('message', function(response) {
+  if (response.data && response.data.source === 'iframe') {}
+});
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   startWebPlaybackSDK();
@@ -49,14 +68,15 @@ function fetchFeaturesInformation(endpoint) {
     }),
   };
   fetch(endpoint, fetchOptions)
-    .then(function (response) {
+    .then(function(response) {
       return response.json();
     })
-    .then(function (json) {
+    .then(function(json) {
       currentTrackFeatures = json;
       console.log(currentTrackFeatures);
+      sendToAllFrames(currentTrackFeatures);
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
 }
@@ -74,11 +94,13 @@ function startWebPlaybackSDK() {
   player.connect();
 
   // Ready
-  player.addListener("ready", ({ device_id }) => {
+  player.addListener("ready", ({
+    device_id
+  }) => {
     console.log(
       "Ready with Device ID " +
-        device_id +
-        "Select the Duet device in Spotify to begin playback."
+      device_id +
+      "Select the Duet device in Spotify to begin playback."
     );
     updateCurrentTrack(player);
     player.getCurrentState().then((state) => {
@@ -90,24 +112,32 @@ function startWebPlaybackSDK() {
   });
 
   // Not Ready
-  player.addListener("not_ready", ({ device_id }) => {
+  player.addListener("not_ready", ({
+    device_id
+  }) => {
     console.log("Device ID has gone offline", device_id);
   });
 
-  player.addListener("initialization_error", ({ message }) => {
+  player.addListener("initialization_error", ({
+    message
+  }) => {
     console.error(message);
   });
 
-  player.addListener("authentication_error", ({ message }) => {
+  player.addListener("authentication_error", ({
+    message
+  }) => {
     console.error(message);
   });
 
-  player.addListener("account_error", ({ message }) => {
+  player.addListener("account_error", ({
+    message
+  }) => {
     console.error(message);
   });
 
   // Play button
-  document.getElementById("togglePlay").onclick = function () {
+  document.getElementById("togglePlay").onclick = function() {
     player.togglePlay().then(() => {
       playing = !playing;
       updateButton();
@@ -125,7 +155,7 @@ function startWebPlaybackSDK() {
     });
   };
   // Next button
-  document.getElementById("nextTrack").onclick = function () {
+  document.getElementById("nextTrack").onclick = function() {
     playing = true;
     updateButton();
     player.nextTrack();
@@ -138,7 +168,7 @@ function startWebPlaybackSDK() {
     });
   };
   // Previous button
-  document.getElementById("previousTrack").onclick = function () {
+  document.getElementById("previousTrack").onclick = function() {
     playing = true;
     updateButton();
     player.previousTrack();
@@ -185,4 +215,29 @@ buildButton.addEventListener("click", hideModal);
 
 function hideModal() {
   document.querySelector(".center-wrapper").style.display = "none";
+}
+
+const toggleLibraryButton = document.querySelector("button#toggleLibrary");
+// console.log(toggleLibraryButton);
+toggleLibraryButton.addEventListener("click", toggleLibrary);
+
+function toggleLibrary() {
+  const library = document.querySelector("#library");
+  if (library.style.display == "none" || library.style.display == "") {
+    library.style.display = "block";
+  } else if (library.style.display == "block") {
+    library.style.display = "none";
+  }
+}
+
+function toggleCanvas(num) {
+  for (let i = 1; i <= 4; i++) {
+    let iframe = document.getElementById("canvas" + i);
+    if (i == num) {
+      iframe.style.display = "block";
+    } else {
+      iframe.style.display = "none";
+    }
+  }
+  toggleLibrary();
 }

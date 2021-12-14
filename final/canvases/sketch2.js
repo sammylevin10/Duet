@@ -19,14 +19,10 @@ let blooms = [];
 let bloomsCount = 15;
 
 function handleMessage(e) {
-  // console.log("CANVAS 2 RECEIVED MESSSAGE");
   if (typeof e == "object") {
-    // console.log("I received an object");
     currentTrackFeatures = e.data;
     targetHue = map(currentTrackFeatures.acousticness, 0, 1, 10, 90);
     hue = targetHue;
-  } else {
-    // console.log(e.data);
   }
 }
 
@@ -43,28 +39,19 @@ console.log = function(...rest) {
   _log.apply(console, arguments);
 };
 
-// function preload() {
-//   song = loadSound("../assets/sound/song1.mp3");
-// }
-
 function setup() {
   // Canvas
   let canvas = createCanvas(5376, 2688).id();
 
-  // hue = random(100);
   colorMode(HSL, 100, 100, 100, 100);
 
   // Sound
-  // fft = new p5.FFT();
-  // peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
-  // song.play();
   mic = new p5.AudioIn();
   mic.start();
   fft = new p5.FFT();
   fft.setInput(mic);
   // Min frequency, max frequency, amplitude threshold, frames to wait
   peakDetect = new p5.PeakDetect(20, 300, 0.4, 40);
-  // amplitude = new p5.Amplitude();
 
   // A-Frame
   world = new World('VRScene');
@@ -155,17 +142,6 @@ function generateBloomPosition() {
   }
   return coords;
 }
-
-// // Pressing enter starts/stops music;
-// function keyPressed() {
-//   if (keyIsDown(13)) {
-//     if (song.isPlaying()) {
-//       song.pause();
-//     } else {
-//       song.play();
-//     }
-//   }
-// }
 
 // Particles eminate from Blooms
 class Particle {

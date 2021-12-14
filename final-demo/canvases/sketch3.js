@@ -14,20 +14,6 @@ let maxLightness = 30;
 // Sound
 let fft, peakDetect, peakDetected, currLevel, song;
 
-// function handleMessage(e) {
-//   console.log("CANVAS 3 RECEIVED MESSSAGE");
-//   if (typeof e == "object") {
-//     // console.log("I received an object");
-//     currentTrackFeatures = e.data;
-//     targetHue = map(currentTrackFeatures.acousticness, 0, 1, 10, 90);
-//     hue = targetHue;
-//   } else {
-//     // console.log(e.data);
-//   }
-// }
-
-// window.addEventListener('message', handleMessage, false);
-
 const _log = console.log;
 console.log = function(...rest) {
   window.parent.postMessage({
@@ -39,11 +25,7 @@ console.log = function(...rest) {
   _log.apply(console, arguments);
 };
 
-
-
-function preload() {
-  // song = loadSound("assets/sound/song1.mp3");
-}
+function preload() {}
 
 function setup() {
   // Canvas
@@ -61,10 +43,6 @@ function setup() {
 
   w = width / 64;
   noStroke();
-
-  // peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
-  // song.play();
-  // amplitude = new p5.Amplitude();
 
   // A-Frame
   world = new World('VRScene');
@@ -109,10 +87,8 @@ function draw() {
   }
   for (var i = 0; i < spectrum.length; i++) {
     var amp = spectrum[i];
-    // var r = map(amp, 0, 256, 20, 100);
     if (i < 32) {
       fill((targetHue + map(i, 0, 32, -5, 5)), 50, 50);
-      // fill(50, 50, 50);
     } else {
       fill((targetHue + map(i, 32, 64, 5, -5)), 50, 50);
     }

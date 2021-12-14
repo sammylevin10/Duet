@@ -11,7 +11,30 @@ body {
   background-color: black;
 }
 
+.canvas {
+  border: none;
+  z-index: -1;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  animation-name: iframe;
+  animation-duration: 0.3s;
+}
+
+@keyframes iframe {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
 #canvas-container {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,6 +93,11 @@ body {
 i {
   margin: 0;
   padding: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+i:hover {
+  transform: scale(1.1);
 }
 
 .playback-control {
@@ -87,14 +115,12 @@ i {
 #togglePlay {
   color: white;
   font-size: 50px;
-  /* margin-top: 30px; */
 }
 
 #previousTrack,
 #nextTrack {
   font-size: 35px;
   line-height: 50px;
-  /* margin-bottom: 20px; */
 }
 
 .spotify-button:hover {
@@ -120,7 +146,82 @@ i {
   width: 50%;
   padding: 0px;
   margin: 0px;
-  /* margin-left: 25px; */
+}
+
+#toggleLibrary {
+  position: fixed;
+  font-size: 50px;
+  right: 25px;
+  bottom: 20px;
+  color: white;
+  background-color: var(--black);
+  border: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+#toggleLibrary i {
+  padding: 0;
+  margin: 0;
+}
+
+#library {
+  width: 660px;
+  height: 220px;
+  border-radius: 20px 20px 0px 0px;
+  position: fixed;
+  display: none;
+  align-items: column;
+  justify-content: space-around;
+  right: 10px;
+  bottom: 80px;
+  background: var(--black);
+  padding: 15px;
+  margin: 0;
+  animation-name: library;
+  animation-duration: 0.3s;
+  z-index: 1;
+}
+
+@keyframes library {
+  0% {
+    bottom: 60px;
+    opacity: 0
+  }
+
+  100% {
+    bottom: 80px;
+    opacity: 1
+  }
+}
+
+#library img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.imgButton {
+  border-radius: 20px;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  text-align: center;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.imgButton:hover {
+  transform: scale(1.05);
+}
+
+.imgRow {
+  width: 400px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
 }
 
 #song-info {
@@ -128,9 +229,6 @@ i {
   flex-direction: column;
   justify-content: space-around;
   padding-left: 15px;
-  /* color: red; */
-  /* background-color: pink; */
-  /* border: 1px solid red; */
 }
 
 #playback-buttons {
@@ -151,7 +249,6 @@ a {
 }
 
 .center-container {
-  /* background-color: pink; */
   display: flex;
   flex-direction: column;
   align-items: center;

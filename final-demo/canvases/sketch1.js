@@ -1,9 +1,4 @@
-// let color = 128;
 let currentTrackFeatures = {};
-// {
-//   'acousticness': 0.5,
-//   'energy': 0.5
-// };
 
 let mic;
 let fft, peakDetect, amplitude;
@@ -28,37 +23,9 @@ function handleMessage(e) {
   window.alert("CANVAS 1 RECEIVED MESSSAGE");
   console.log(e.data);
   if (typeof e == "object") {
-    // console.log("I received an object");
     currentTrackFeatures = e.data;
-  } else {
-    // console.log(e.data);
-  }
+  } else {}
 }
-
-// function preload() {
-//   song = loadSound("../assets/sound/song1.mp3");
-// }
-//
-// function setup() {
-//
-//   mic = new p5.AudioIn();
-//   mic.start();
-//   // fft = new p5.FFT();
-//   // fft.setInput(mic);
-//
-//   // fft = new p5.FFT();
-//   // peakDetect = new p5.PeakDetect(20, 500, 0.7, 15);
-//   // song.play();
-//   // amplitude = new p5.Amplitude();
-// }
-//
-// function draw() {
-//   // console.log(amplitude.getLevel());
-//   let volume = mic.getLevel();
-//   console.log(volume);
-// }
-
-
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -79,13 +46,10 @@ function draw() {
   let acousticness = currentTrackFeatures.acousticness;
   background(0, 0, 0, 5);
   micLevel = mic.getLevel();
-  // console.log(micLevel);
   let spectrum = fft.analyze();
   peakDetect.update(fft);
 
-  if (peakDetect.isDetected) {
-    // console.log("DETECT");
-  }
+  if (peakDetect.isDetected) {}
 
   // When a peak is detected, create a bloom with parameters that are responsive to track features and FFT features
   if ((peakDetect.isDetected) && currentTrackFeatures != {}) {
@@ -139,8 +103,6 @@ class Bloom {
   }
   // Creates a starting and ending color loosely based off of the hue param
   generateColors(hue) {
-    // console.log(hue);
-    // let hue = random(15, 85);
     let start = hue - random(10);
     let end = hue + random(10);
     if (start < 0) {
@@ -151,8 +113,6 @@ class Bloom {
     }
     this.startColor = color(min(start, end), this.saturation, 65, 30);
     this.endColor = color(max(start, end), this.saturation, 65, 60);
-    // console.log(this.startColor);
-    // console.log(this.endColor);
   }
   moveAndDisplay() {
     // Advance the color over time

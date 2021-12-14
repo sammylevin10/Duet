@@ -15,7 +15,7 @@ authenticationParams.append("client_id", "c765bbca6c64400286254e513c85db86");
 authenticationParams.append("response_type", "token");
 authenticationParams.append(
   "redirect_uri",
-  "https://i6.cims.nyu.edu/~sal705/interactive/MusicVisualizer/final/player.html"
+  "https://i6.cims.nyu.edu/~sal705/interactive/MusicVisualizer/final/"
 );
 authenticationParams.append("scope", "streaming");
 

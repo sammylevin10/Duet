@@ -24,12 +24,10 @@ body {
 
 @keyframes iframe {
   from {
-    /* bottom: 60px; */
     opacity: 0
   }
 
   to {
-    /* bottom: 100px; */
     opacity: 1
   }
 }
@@ -108,7 +106,6 @@ i:hover {
   background-color: var(--black);
   border: none;
   padding: 0px 15px 0px 15px;
-  /* padding: 0px; */
   transition: all 0.2s ease-in-out;
   height: 75px;
   margin-top: 10px;
@@ -117,14 +114,12 @@ i:hover {
 #togglePlay {
   color: white;
   font-size: 50px;
-  /* margin-top: 30px; */
 }
 
 #previousTrack,
 #nextTrack {
   font-size: 35px;
   line-height: 50px;
-  /* margin-bottom: 20px; */
 }
 
 .spotify-button:hover {
@@ -150,20 +145,8 @@ i:hover {
   width: 50%;
   padding: 0px;
   margin: 0px;
-  /* margin-left: 25px; */
 }
 
-/* .right-container {
-  display: flex;
-  flex-direction: row;
-  width: 50%;
-  padding: 0px;
-  margin: 0px;
-  background: pink;
-} */
-/* .right-container p {
-  color: white;
-} */
 #toggleLibrary {
   position: fixed;
   font-size: 50px;
@@ -175,7 +158,6 @@ i:hover {
   padding: 0;
   margin: 0;
   z-index: 1;
-  /* background-color: pink; */
 }
 
 #toggleLibrary i {
@@ -217,16 +199,13 @@ i:hover {
   width: 200px;
   height: 200px;
   border-radius: 10px;
-  /* display: block; */
 }
 
 .imgButton {
-  /* display: block; */
   border-radius: 20px;
   width: 200px;
   height: 200px;
   margin: 10px;
-  /* border: 5px solid red; */
   text-align: center;
   color: white;
   transition: all 0.2s ease-in-out;
@@ -244,15 +223,11 @@ i:hover {
   flex-direction: row;
 }
 
-/* #toggleLibraryIcon {} */
 #song-info {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   padding-left: 15px;
-  /* color: red; */
-  /* background-color: pink; */
-  /* border: 1px solid red; */
 }
 
 #playback-buttons {
@@ -273,7 +248,6 @@ a {
 }
 
 .center-container {
-  /* background-color: pink; */
   display: flex;
   flex-direction: column;
   align-items: center;
